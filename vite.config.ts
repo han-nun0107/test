@@ -25,4 +25,18 @@ export default defineConfig({
       "@types": path.resolve(__dirname, "src/types"),
     },
   },
+  build: {
+    target: ["es2022", "edge124", "firefox124", "chrome124", "safari18"],
+    cssMinify: true,
+    minify: "esbuild",
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ["react", "react-dom", "react-router"],
+          query: ["@tanstack/react-query"],
+          supabase: ["@supabase/supabase-js"],
+        },
+      },
+    },
+  },
 });

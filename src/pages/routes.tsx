@@ -1,7 +1,13 @@
+import { lazy, Suspense } from "react";
 import { createBrowserRouter, Outlet } from "react-router";
-import { LandingPage, Login, MyPage, Privacy } from "@/pages";
 import ProtectedRoute from "@/components/common/ProtectedRoute";
 import Layout from "@/components/common/Layout";
+import LoadingIndicator from "@/components/common/LoadingIndicator";
+
+const LandingPage = lazy(() => import("@/pages/LandingPage"));
+const Login = lazy(() => import("@/pages/Login"));
+const MyPage = lazy(() => import("@/pages/MyPage"));
+const Privacy = lazy(() => import("@/pages/Privacy"));
 
 export const router = createBrowserRouter([
   {
@@ -13,23 +19,37 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <LandingPage />,
+        element: (
+          <Suspense fallback={<LoadingIndicator />}>
+            <LandingPage />
+          </Suspense>
+        ),
       },
       {
         path: "/login",
-        element: <Login />,
+        element: (
+          <Suspense fallback={<LoadingIndicator />}>
+            <Login />
+          </Suspense>
+        ),
       },
       {
         path: "/my-page",
         element: (
           <ProtectedRoute>
-            <MyPage />
+            <Suspense fallback={<LoadingIndicator />}>
+              <MyPage />
+            </Suspense>
           </ProtectedRoute>
         ),
       },
       {
         path: "/privacy",
-        element: <Privacy />,
+        element: (
+          <Suspense fallback={<LoadingIndicator />}>
+            <Privacy />
+          </Suspense>
+        ),
       },
     ],
   },
