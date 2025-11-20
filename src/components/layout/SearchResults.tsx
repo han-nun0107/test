@@ -46,7 +46,6 @@ export default function SearchResults({
       {searchResults.map((song) => {
         const categories = normalizeCategories(song);
         const handleClick = () => {
-          const title = song.title || "제목 없음";
           onSongClick?.(song);
         };
         return (

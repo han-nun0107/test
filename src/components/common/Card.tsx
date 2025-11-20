@@ -1,6 +1,6 @@
 import type { ComponentProps, ReactElement } from "react";
 
-import { CARD_MAP } from "@/foundations/cardMap";
+import { CARD_MAP } from "@/foundations";
 
 type CardType = keyof typeof CARD_MAP;
 
@@ -12,7 +12,7 @@ const Card = (props: CardProps): ReactElement => {
   const Component = CARD_MAP[props.type] as React.ComponentType<
     typeof props.data
   >;
-  return <Component {...(props.data as object)} />;
+  return <Component {...props.data} />;
 };
 
 export default Card;
