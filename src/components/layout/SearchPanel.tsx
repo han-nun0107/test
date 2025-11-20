@@ -28,7 +28,7 @@ export default function SearchPanel({
     <>
       <div
         className={cn(
-          "fixed top-0 right-0 z-40 h-full w-96",
+          "fixed top-0 right-0 z-40 h-full w-full sm:w-96",
           "bg-white shadow-2xl",
           "transition-transform duration-300 ease-in-out",
           isOpen ? "translate-x-0" : "translate-x-full",
@@ -66,7 +66,7 @@ export default function SearchPanel({
                 value={searchQuery}
                 onChange={(e) => onSearchChange(e.target.value)}
                 placeholder="제목, 가수, 태그로 검색..."
-                className="w-full rounded-lg border border-gray-300 px-4 py-3 pr-10 pl-10 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none"
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 pr-8 pl-8 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:px-4 sm:py-3 sm:pr-10 sm:pl-10 sm:text-base"
               />
               {searchQuery && (
                 <Button

@@ -102,3 +102,27 @@ body {
     background-position: 100% 50%;
   }
 }
+
+/* 모바일 최적화 */
+@media (max-width: 640px) {
+  /* 모바일에서 터치 영역 확대 */
+  button,
+  a,
+  [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* 모바일에서 텍스트 선택 방지 (필요시) */
+  .no-select {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  /* 모바일에서 스크롤 부드럽게 */
+  html {
+    -webkit-overflow-scrolling: touch;
+  }
+}

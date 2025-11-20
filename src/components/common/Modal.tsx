@@ -36,7 +36,7 @@ const Modal = ({
     <Portal containerId={PORTAL_CONTAINER_ID.MODAL}>
       <div
         onClick={handleOverlayClick}
-        className="fixed inset-0 flex items-center justify-center bg-black/25"
+        className="fixed inset-0 flex items-center justify-center bg-black/25 p-4"
         style={{ zIndex: Z_INDEX.MODAL }}
       >
         <FocusLock>
@@ -45,7 +45,7 @@ const Modal = ({
             aria-modal="true"
             {...(title && { "aria-labelledby": "modal-title" })}
             className={cn(
-              "relative flex w-170 flex-col items-center rounded-[20px] bg-white px-[40px] py-[100px]",
+              "relative flex w-[90vw] max-w-170 flex-col items-center rounded-[20px] bg-white px-4 py-8 sm:px-6 sm:py-12 md:px-[40px] md:py-[100px]",
               className,
             )}
             style={{ zIndex: Z_INDEX.MODAL }}
@@ -53,7 +53,7 @@ const Modal = ({
             {title && (
               <h2
                 id="modal-title"
-                className="text-center text-[32px] font-bold whitespace-pre-wrap text-[#333]"
+                className="text-center text-xl sm:text-2xl md:text-[32px] font-bold whitespace-pre-wrap text-[#333]"
               >
                 {title}
               </h2>
@@ -64,7 +64,7 @@ const Modal = ({
                 type="button"
                 aria-label="닫기"
                 onClick={handleClose}
-                className="absolute top-10 right-8"
+                className="absolute top-4 right-4 sm:top-6 sm:right-6 md:top-10 md:right-8"
               >
                 <Icon icon={CloseIcon} size={24} />
               </button>

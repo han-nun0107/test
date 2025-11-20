@@ -4,8 +4,8 @@ type EmptyStateProps = {
 
 export default function EmptyState({ message }: EmptyStateProps) {
   return (
-    <div className="col-span-full flex items-center justify-center py-20">
-      <p className="text-lg text-gray-500">{message}</p>
+    <div className="col-span-full flex items-center justify-center py-12 sm:py-20">
+      <p className="text-base sm:text-lg text-gray-500">{message}</p>
     </div>
   );
 }

@@ -22,7 +22,7 @@ export default function SideMenu({
     <>
       <div
         className={cn(
-          "fixed top-0 left-0 z-40 h-full w-64",
+          "fixed top-0 left-0 z-40 h-full w-64 sm:w-80",
           "bg-white shadow-2xl",
           "transition-transform duration-300 ease-in-out",
           isOpen ? "translate-x-0" : "-translate-x-full",

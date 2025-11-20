@@ -48,7 +48,7 @@ export default function ToggleButtonGroup({
       )}
       <div
         ref={containerRef}
-        className="fixed right-4 bottom-4 z-50 flex flex-col items-end gap-3 md:right-8 md:bottom-6"
+        className="fixed right-2 bottom-2 sm:right-4 sm:bottom-4 z-50 flex flex-col items-end gap-2 sm:gap-3 md:right-8 md:bottom-6"
         onKeyDown={handleKeyDown}
       >
         <div
@@ -66,7 +66,7 @@ export default function ToggleButtonGroup({
               onClick={button.onClick}
               variant="FLOATING_TOGGLE"
               className={cn(
-                "min-w-[120px] justify-start",
+                "min-w-[100px] sm:min-w-[120px] justify-start text-sm sm:text-base",
                 button.active &&
                   "border-indigo-400 bg-linear-to-r from-indigo-50 to-purple-50 text-indigo-700 shadow-md shadow-indigo-500/20",
                 !button.active && "hover:bg-gray-50",

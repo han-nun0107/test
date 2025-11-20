@@ -16,31 +16,31 @@ export default function SearchResults({
 }: SearchResultsProps) {
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center py-8">
-        <div className="text-gray-400">검색 중...</div>
+      <div className="flex items-center justify-center py-6 sm:py-8">
+        <div className="text-sm sm:text-base text-gray-400">검색 중...</div>
       </div>
     );
   }
 
   if (!searchQuery.trim()) {
     return (
-      <div className="flex items-center justify-center py-8">
-        <div className="text-center text-gray-400">검색어를 입력해주세요</div>
+      <div className="flex items-center justify-center py-6 sm:py-8">
+        <div className="text-center text-sm sm:text-base text-gray-400">검색어를 입력해주세요</div>
       </div>
     );
   }
 
   if (searchResults.length === 0) {
     return (
-      <div className="flex items-center justify-center py-8">
-        <div className="text-center text-gray-400">검색 결과가 없습니다</div>
+      <div className="flex items-center justify-center py-6 sm:py-8">
+        <div className="text-center text-sm sm:text-base text-gray-400">검색 결과가 없습니다</div>
       </div>
     );
   }
 
   return (
     <div className="space-y-2">
-      <div className="mb-2 text-sm text-gray-500">
+      <div className="mb-2 text-xs sm:text-sm text-gray-500">
         {searchResults.length}개의 결과
       </div>
       {searchResults.map((song) => {
@@ -52,12 +52,12 @@ export default function SearchResults({
           <div
             key={song.id ?? song.key}
             onClick={handleClick}
-            className="cursor-pointer rounded-lg border border-gray-200 p-3 transition-colors hover:bg-gray-50"
+            className="cursor-pointer rounded-lg border border-gray-200 p-2 sm:p-3 transition-colors hover:bg-gray-50"
           >
-            <div className="font-medium text-gray-800">
+            <div className="font-medium text-sm sm:text-base text-gray-800 truncate">
               {song.title || "제목 없음"}
             </div>
-            <div className="mt-1 text-sm text-gray-600">
+            <div className="mt-1 text-xs sm:text-sm text-gray-600 truncate">
               {normalizeSinger(song) || "가수 없음"}
             </div>
             {categories.length > 0 && (
@@ -65,7 +65,7 @@ export default function SearchResults({
                 {categories.map((cat, idx) => (
                   <span
                     key={idx}
-                    className="rounded-full bg-indigo-100 px-2 py-0.5 text-xs text-indigo-700"
+                    className="rounded-full bg-indigo-100 px-1.5 sm:px-2 py-0.5 text-[10px] sm:text-xs text-indigo-700"
                   >
                     {cat}
                   </span>

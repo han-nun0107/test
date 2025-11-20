@@ -22,18 +22,18 @@ export default function IndexAnotherCard({
   const categoryName = categories[0] || "";
 
   return (
-    <article>
+    <article className="h-[160px] w-full sm:h-32 sm:w-57">
       <div
-        className="relative flex h-32 w-57 cursor-pointer items-center justify-center overflow-hidden rounded-lg"
+        className="relative flex h-[160px] w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg sm:h-full"
         onClick={() => setIsOpen(true)}
       >
         <img
           src={image}
           alt="카드 이미지"
-          className="absolute inset-0 h-full w-full object-cover"
+          className="absolute inset-0 h-full w-full object-cover object-center"
         />
         <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px]" />
-        <p className="relative z-10 text-center text-sm font-bold text-[#fafafb] drop-shadow-lg">
+        <p className="relative z-10 px-2 text-center text-xs font-bold text-[#fafafb] drop-shadow-lg sm:text-sm">
           {categoryName}
         </p>
       </div>

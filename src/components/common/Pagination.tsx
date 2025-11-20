@@ -26,7 +26,7 @@ const Pagination = ({
   return (
     <nav
       aria-label="pagination"
-      className={cn("flex items-center justify-center gap-4", className)}
+      className={cn("flex items-center justify-center gap-2 sm:gap-4", className)}
     >
       {/* 이전 버튼 */}
       <Button
@@ -43,7 +43,7 @@ const Pagination = ({
       </Button>
 
       {/* 페이지 목록 */}
-      <ol className="flex gap-2">
+      <ol className="flex gap-1 sm:gap-2">
         {pages.map((page, idx) => {
           if (page === "...") {
             return (

@@ -10,19 +10,19 @@ export default function Login() {
   const isButtonDisabled = !(ageChecked && consentChecked) || isLoading;
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-linear-to-br from-purple-200 via-blue-200 to-purple-300">
-      <main className="glass-container flex w-[95vw] max-w-lg flex-col items-center gap-6 px-10 py-10">
+    <div className="flex min-h-screen items-center justify-center bg-linear-to-br from-purple-200 via-blue-200 to-purple-300 p-4">
+      <main className="glass-container flex w-full max-w-lg flex-col items-center gap-4 sm:gap-6 px-6 py-8 sm:px-10 sm:py-10">
         <img
           src="https://nng-phinf.pstatic.net/MjAyNTAzMTZfMjMz/MDAxNzQyMDU0NTAyMDY4.VnZJ8y2dPYjw2CmwOlgEcBEjK7fdNWaWFK3gTlx_-XMg.Mfk1lDB-NjByuqHR_q4lpqfuZZISIp67JRPe1Pk5Twwg.PNG/123.png?type=f120_120_na"
           alt="온유 ONU 로고"
           className="mb-2 h-16 w-16 rounded-full bg-white/70 shadow-xl ring-2 ring-indigo-200"
         />
 
-        <h1 className="moving-gradient-text mb-1 text-center text-3xl font-extrabold tracking-tight">
+        <h1 className="moving-gradient-text mb-1 text-center text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight">
           온유 노래책 로그인
         </h1>
 
-        <p className="text-center text-sm text-gray-700">
+        <p className="text-center text-xs sm:text-sm text-gray-700">
           즐겨찾기와 다양한 개인화 기능(추가예정)을 사용해보세요
           <br />
           물론 로그인하지 않아도 노래책을 사용하실 수 있습니다!
@@ -32,7 +32,7 @@ export default function Login() {
           서비스 제공 목적 외에는 사용되지 않습니다:
         </p>
 
-        <ul className="list-disc space-y-1 pl-5 text-sm text-gray-700">
+        <ul className="list-disc space-y-1 pl-5 text-xs sm:text-sm text-gray-700">
           <li>이메일 주소</li>
           <li>닉네임 (이름)</li>
           <li>프로필 이미지 (선택)</li>
