@@ -36,18 +36,16 @@ export default function MusicCard({
     window.open(youtubeUrl, "_blank");
   };
   return (
-    <article className="flex h-auto w-full flex-col items-center justify-center ">
-      <div className="w-56.1 flex h-70 flex-col gap-1.5 overflow-hidden rounded-xl shadow-lg transition-all duration-300 hover:scale-105">
+    <article className="flex h-auto w-full max-w-[224.4px] min-w-[224.4px] flex-col items-center justify-center">
+      <div className="flex h-70 w-full flex-col gap-1.5 overflow-hidden rounded-xl shadow-lg transition-all duration-300 hover:scale-105">
         <div
-          className="group relative cursor-pointer overflow-hidden sm:h-32"
+          className="group relative aspect-video w-full cursor-pointer overflow-hidden"
           onClick={handleImageClick}
         >
-          <div className="relative h-full w-full bg-gray-200">
+          <div className="relative h-full w-full">
             <img
               src={thumbnail}
               alt="music-card"
-              width={480}
-              height={360}
               className="pointer-events-none h-full w-full object-cover object-center"
               loading="eager"
               fetchPriority="high"
@@ -78,12 +76,12 @@ export default function MusicCard({
             )}
           </div>
         </div>
-        <div className="mx-2 mt-2 flex items-center justify-between sm:mx-3">
-          <div className="flex min-w-0 flex-1 flex-col items-start justify-center gap-1">
-            <p className="w-full truncate text-xs font-bold text-[#1f2937] sm:text-sm">
+        <div className="mx-2 mt-2 flex min-w-0 items-center justify-between gap-2 overflow-hidden sm:mx-3">
+          <div className="flex min-w-0 flex-1 flex-col items-start justify-center gap-1 overflow-hidden">
+            <p className="min-w-0 truncate text-xs font-bold text-[#1f2937] sm:text-sm">
               {title}
             </p>
-            <p className="w-full truncate text-[9px] font-medium text-[#6b7280] sm:text-[10px]">
+            <p className="min-w-0 truncate text-[9px] font-medium text-[#6b7280] sm:text-[10px]">
               {singer}
             </p>
           </div>
