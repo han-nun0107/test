@@ -51,6 +51,8 @@ export default function Singer() {
     return <LoadingState />;
   }
 
+  console.log(displayedSingers);
+
   return (
     <GridContainer>
       {displayedSingers.length === 0 ? (
