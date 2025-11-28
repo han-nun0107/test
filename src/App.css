@@ -1,154 +1,124 @@
 @import "tailwindcss";
 
-html {
-  overflow-y: scroll;
+@theme {
+  --font-family-sans:
+    "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
+    system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo",
+    "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", sans-serif;
+
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 960px;
+  --breakpoint-lg: 1280px;
+  --breakpoint-xl: 1600px;
+  --breakpoint-2xl: 1920px;
 }
 
-body {
-  font-family:
-    "Pretendard Variable",
-    Pretendard,
-    -apple-system,
-    BlinkMacSystemFont,
-    system-ui,
-    Roboto,
-    "Helvetica Neue",
-    "Segoe UI",
-    "Apple SD Gothic Neo",
-    "Noto Sans KR",
-    "Malgun Gothic",
-    "Apple Color Emoji",
-    "Segoe UI Emoji",
-    "Segoe UI Symbol",
-    sans-serif;
-}
-
-html::-webkit-scrollbar,
-body::-webkit-scrollbar,
-*::-webkit-scrollbar {
-  width: 8px;
-}
-
-html::-webkit-scrollbar-track,
-body::-webkit-scrollbar-track,
-*::-webkit-scrollbar-track {
-  background: transparent;
-  border-radius: 10px;
-}
-
-html::-webkit-scrollbar-thumb,
-body::-webkit-scrollbar-thumb,
-*::-webkit-scrollbar-thumb {
-  background: linear-gradient(
-    180deg,
-    rgba(99, 102, 241, 0.3),
-    rgba(139, 92, 246, 0.3),
-    rgba(236, 72, 153, 0.3)
-  );
-  border-radius: 10px;
-  transition: all 0.3s ease;
-}
-
-html::-webkit-scrollbar-thumb:hover,
-body::-webkit-scrollbar-thumb:hover,
-*::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(
-    180deg,
-    rgba(99, 102, 241, 0.6),
-    rgba(139, 92, 246, 0.6),
-    rgba(236, 72, 153, 0.6)
-  );
-}
-
-html,
-body,
-* {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(139, 92, 246, 0.4) transparent;
-}
-
-@keyframes subtleHologram {
-  0%,
-  100% {
-    background-position: 0% 50%;
+@layer base {
+  html {
+    overflow-y: scroll;
   }
-  50% {
-    background-position: 100% 50%;
+
+  body {
+    font-family: var(--font-family-sans);
+  }
+
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar,
+  *::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  html::-webkit-scrollbar-track,
+  body::-webkit-scrollbar-track,
+  *::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+  }
+
+  html::-webkit-scrollbar-thumb,
+  body::-webkit-scrollbar-thumb,
+  *::-webkit-scrollbar-thumb {
+    background: linear-gradient(
+      180deg,
+      rgba(99, 102, 241, 0.3),
+      rgba(139, 92, 246, 0.3),
+      rgba(236, 72, 153, 0.3)
+    );
+    border-radius: 10px;
+    transition: all 0.3s ease;
+  }
+
+  html::-webkit-scrollbar-thumb:hover,
+  body::-webkit-scrollbar-thumb:hover,
+  *::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(
+      180deg,
+      rgba(99, 102, 241, 0.6),
+      rgba(139, 92, 246, 0.6),
+      rgba(236, 72, 153, 0.6)
+    );
+  }
+
+  html,
+  body,
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(139, 92, 246, 0.4) transparent;
+  }
+
+  @media (max-width: 640px) {
+    html {
+      -webkit-overflow-scrolling: touch;
+    }
   }
 }
 
-@keyframes subtleGradientShift {
-  0%,
-  100% {
-    background-position: 0% 50%;
+@layer components {
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
   }
-  50% {
-    background-position: 100% 50%;
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
   }
-}
 
-.custom-scrollbar::-webkit-scrollbar {
-  width: 8px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
-  border-radius: 10px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: linear-gradient(
-    180deg,
-    rgba(99, 102, 241, 0.3),
-    rgba(139, 92, 246, 0.3),
-    rgba(236, 72, 153, 0.3)
-  );
-  border-radius: 10px;
-  transition: all 0.3s ease;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(
-    180deg,
-    rgba(99, 102, 241, 0.6),
-    rgba(139, 92, 246, 0.6),
-    rgba(236, 72, 153, 0.6)
-  );
-}
-
-.custom-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(139, 92, 246, 0.4) transparent;
-}
-
-.gradient-text {
-  font-family: "Pretendard Variable", Pretendard, sans-serif;
-  font-weight: 900;
-  background: linear-gradient(45deg, #6366f1, #8b5cf6, #ec4899, #f59e0b);
-  background-size: 300% 300%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  line-height: 1.1;
-  animation: gradientShift 3s ease infinite;
-}
-
-@keyframes gradientShift {
-  0%,
-  100% {
-    background-position: 0% 50%;
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: linear-gradient(
+      180deg,
+      rgba(99, 102, 241, 0.3),
+      rgba(139, 92, 246, 0.3),
+      rgba(236, 72, 153, 0.3)
+    );
+    border-radius: 10px;
+    transition: all 0.3s ease;
   }
-  50% {
-    background-position: 100% 50%;
-  }
-}
 
-@media (max-width: 640px) {
-  button,
-  a,
-  [role="button"] {
-    min-height: 44px;
-    min-width: 44px;
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(
+      180deg,
+      rgba(99, 102, 241, 0.6),
+      rgba(139, 92, 246, 0.6),
+      rgba(236, 72, 153, 0.6)
+    );
+  }
+
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(139, 92, 246, 0.4) transparent;
+  }
+
+  .gradient-text {
+    font-family: "Pretendard Variable", Pretendard, sans-serif;
+    font-weight: 900;
+    background: linear-gradient(45deg, #6366f1, #8b5cf6, #ec4899, #f59e0b);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.1;
+    animation: gradientShift 3s ease infinite;
   }
 
   .no-select {
@@ -158,7 +128,44 @@ body,
     user-select: none;
   }
 
-  html {
-    -webkit-overflow-scrolling: touch;
+  @media (max-width: 640px) {
+    button,
+    a,
+    [role="button"] {
+      min-height: 44px;
+      min-width: 44px;
+    }
+  }
+}
+
+@layer utilities {
+  @keyframes subtleHologram {
+    0%,
+    100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  @keyframes subtleGradientShift {
+    0%,
+    100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  @keyframes gradientShift {
+    0%,
+    100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
   }
 }

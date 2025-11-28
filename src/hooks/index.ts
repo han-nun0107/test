@@ -15,3 +15,4 @@ export { useModalState } from "./landing/useModalState";
 export { useDebounce } from "./useDebounce";
 export { useSearchSongs } from "./song-page/useSearchSongs";
 export { useNavigation } from "./useNavigation";
+export { useLayoutHandlers } from "./layout/useLayoutHandlers";

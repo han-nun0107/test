@@ -13,7 +13,6 @@ export function useInfinityScroll({
   hasNextPage,
   isFetching,
 }: Params) {
-  // fetchNextPage를 안정적인 참조로 만들기
   const stableFetchNextPage = useCallback(() => {
     if (!hasNextPage || isFetching) return;
     fetchNextPage();
@@ -32,7 +31,7 @@ export function useInfinityScroll({
 
     const observer = new IntersectionObserver(onIntersect, {
       threshold: 0.1,
-      rootMargin: "100px", // ★ 미리 로드 시작
+      rootMargin: "150px",
     });
 
     observer.observe(target);
@@ -40,5 +39,5 @@ export function useInfinityScroll({
     return () => {
       observer.disconnect();
     };
-  }, [observerRef, stableFetchNextPage]); // ★ 의존성 단순화
+  }, [observerRef, stableFetchNextPage]);
 }
