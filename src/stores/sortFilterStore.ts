@@ -10,7 +10,7 @@ export type SortType =
   | "skill-asc"
   | "skill-desc";
 
-export type FilterType = "completed" | "recommend" | "favorite" | null;
+export type FilterType = "completed" | "recommend" | "bomb" | "favorite" | null;
 
 type SortFilterState = {
   sortType: SortType;

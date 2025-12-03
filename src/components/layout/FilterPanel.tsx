@@ -10,6 +10,7 @@ type FilterPanelProps = {
 const filterOptions: Array<{ type: FilterType; label: string }> = [
   { type: "completed", label: "완곡" },
   { type: "recommend", label: "추천" },
+  { type: "bomb", label: "폭탄" },
   { type: "favorite", label: "즐겨찾기" },
   { type: null, label: "필터해제" },
 ];

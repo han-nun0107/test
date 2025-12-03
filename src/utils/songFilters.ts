@@ -11,6 +11,9 @@ export function filterSongs(
   if (filterType === "recommend") {
     return songs.filter((song) => song.recommend);
   }
+  if (filterType === "bomb") {
+    return songs.filter((song) => song.bomb);
+  }
   if (filterType === "favorite") {
     return songs.filter((song) => song.bomb);
   }
