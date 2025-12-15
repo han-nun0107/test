@@ -138,31 +138,36 @@ export const useEditSong = () => {
       const payload = preparePayload(formData);
 
       try {
-        let error = null;
-
         if (editingId) {
           const updatePayload = { ...payload, id: editingId };
-          const response = await supabase
+          const { error } = await supabase
             .from("onusongdb")
             .upsert([updatePayload] as never, { onConflict: "id" });
-          error = response.error;
+
+          if (error) {
+            toast.error(error.message || "수정 중 오류가 발생했습니다.");
+            return;
+          }
+
+          toast.success("노래가 수정되었습니다.");
+          queryClient.invalidateQueries({ queryKey: ["songs"] });
+          resetForm();
         } else {
-          const response = await supabase
+          const { error } = await supabase
             .from("onusongdb")
             .insert([payload] as never);
-          error = response.error;
-        }
 
-        if (error) {
-          toast.error(error.message || "오류가 발생했습니다.");
-        } else {
-          toast.success(
-            editingId ? "노래가 수정되었습니다." : "노래가 추가되었습니다.",
-          );
+          if (error) {
+            toast.error(error.message || "추가 중 오류가 발생했습니다.");
+            return;
+          }
+
+          toast.success("노래가 추가되었습니다.");
           queryClient.invalidateQueries({ queryKey: ["songs"] });
           resetForm();
         }
       } catch (error) {
+        console.error("Submit error:", error);
         toast.error("알 수 없는 오류가 발생했습니다.");
       } finally {
         setIsSubmitting(false);
