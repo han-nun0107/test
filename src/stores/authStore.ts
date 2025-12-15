@@ -25,6 +25,7 @@ type AuthState = {
   initializeAuth: () => Promise<void>;
   fetchUserProfile: (userId: string) => Promise<void>;
   ensureUserProfileStats: (userId: string) => Promise<void>;
+  createUserRecord: (userId: string) => Promise<void>;
   signOut: () => Promise<void>;
   deleteAccount: (
     userId: string,
@@ -91,8 +92,62 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         .insert([{ user_id: userId, favorites: [] }] as never);
 
       if (error) {
+        // 중복 키 오류는 무시 (이미 레코드가 생성된 경우)
+        if (error.code === "23505") {
+          return;
+        }
         console.error("user_profile_stats 초기 레코드 생성 실패:", error);
       }
+    }
+  },
+
+  createUserRecord: async (userId: string) => {
+    try {
+      // 로컬 스토리지에서 동의 정보 확인
+      const consentData = localStorage.getItem("user_consent");
+      const consentInfo = consentData ? JSON.parse(consentData) : null;
+      const hasConsent = consentInfo?.consented === true;
+
+      if (!hasConsent) {
+        // 동의 정보가 없으면 user_profile_stats만 생성
+        await get().ensureUserProfileStats(userId);
+        return;
+      }
+
+      // upsert를 사용하여 users 테이블에 레코드 생성 또는 업데이트
+      const { error: updateError } = await supabase.from("users").upsert(
+        [
+          {
+            id: userId, // user_profile_stats의 user_id와 동일
+            consentgiven: true,
+            consentat: new Date().toISOString(),
+          },
+        ] as never,
+        { onConflict: "id" },
+      );
+
+      if (updateError) {
+        // RLS 정책 위반 오류인 경우
+        if (updateError.code === "42501") {
+          console.error(
+            "[createUserRecord] RLS 정책 위반 오류:",
+            updateError.message,
+          );
+        } else {
+          console.error(
+            "[createUserRecord] users 테이블 upsert 실패:",
+            updateError,
+          );
+        }
+      }
+
+      // user_profile_stats 테이블에도 레코드 생성
+      await get().ensureUserProfileStats(userId);
+
+      // 동의 정보 사용 후 로컬 스토리지에서 제거
+      localStorage.removeItem("user_consent");
+    } catch (error) {
+      console.error("[createUserRecord] 예외 발생:", error);
     }
   },
 
@@ -109,16 +164,22 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       });
 
       if (session?.user?.id) {
+        // 초기 세션이 있을 때도 신규 사용자 레코드 생성 확인
+        await get().createUserRecord(session.user.id);
         await get().fetchUserProfile(session.user.id);
       }
 
-      supabase.auth.onAuthStateChange(async (_event, session) => {
+      supabase.auth.onAuthStateChange(async (event, session) => {
         set({
           session,
           user: session?.user ?? null,
         });
 
         if (session?.user?.id) {
+          // SIGNED_IN 이벤트일 때 신규 사용자 레코드 생성
+          if (event === "SIGNED_IN") {
+            await get().createUserRecord(session.user.id);
+          }
           await get().fetchUserProfile(session.user.id);
         } else {
           set({ userProfile: null });

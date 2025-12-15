@@ -18,13 +18,27 @@ export const useLogin = () => {
     }
   }, [session, navigate, redirectParam]);
 
-  const handleLogin = async (isButtonDisabled: boolean) => {
+  const handleLogin = async (
+    isButtonDisabled: boolean,
+    hasAllConsent: boolean,
+  ) => {
     if (isButtonDisabled) return;
 
     setIsLoading(true);
     setErrorMessage("");
 
     try {
+      // 모든 동의가 완료된 경우에만 로컬 스토리지에 저장
+      if (hasAllConsent) {
+        localStorage.setItem(
+          "user_consent",
+          JSON.stringify({
+            consented: true,
+            timestamp: new Date().toISOString(),
+          }),
+        );
+      }
+
       const redirectUrl = `${window.location.origin}/login?redirect=${encodeURIComponent(redirectParam)}`;
 
       const { error } = await supabase.auth.signInWithOAuth({
