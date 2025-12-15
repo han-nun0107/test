@@ -1,5 +1,6 @@
 export { useModal } from "./modal/useModal";
 export { useUserFavoriteStats } from "./my-page/useUserFavoriteStats";
+export { useUserFavorites } from "./my-page/useUserFavorites";
 export { useMusicCard } from "./song-page/useMusicCard";
 export { useMusicCardActions } from "./song-page/useMusicCardActions";
 export { useMusicCardHandlers } from "./song-page/useMusicCardHandlers";
