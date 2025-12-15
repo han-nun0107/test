@@ -1,67 +1,32 @@
-import { useEffect, useState, useRef } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/supabase/supabase";
 import type { FavoriteItem } from "@/types";
 
 export const useUserFavorites = (userId: string | undefined) => {
-  const [favoriteItems, setFavoriteItems] = useState<FavoriteItem[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const abortControllerRef = useRef<AbortController | null>(null);
+  const { data, isLoading } = useQuery({
+    queryKey: ["userFavorites", userId],
+    queryFn: async () => {
+      if (!userId) return [];
 
-  useEffect(() => {
-    if (!userId) {
-      setFavoriteItems([]);
-      return;
-    }
+      const { data: profile } = await supabase
+        .from("user_profile_stats")
+        .select("favorites")
+        .eq("user_id", userId)
+        .maybeSingle();
 
-    const fetchFavorites = async () => {
-      // 이전 요청 취소
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort();
-      }
+      const items: FavoriteItem[] =
+        profile &&
+        Array.isArray((profile as { favorites?: unknown[] }).favorites)
+          ? ((profile as { favorites: unknown[] }).favorites as FavoriteItem[])
+          : [];
 
-      const abortController = new AbortController();
-      abortControllerRef.current = abortController;
+      return items;
+    },
+    enabled: !!userId,
+  });
 
-      setIsLoading(true);
-
-      try {
-        const { data: profile } = await supabase
-          .from("user_profile_stats")
-          .select("favorites")
-          .eq("user_id", userId)
-          .maybeSingle();
-
-        if (abortController.signal.aborted) return;
-
-        // favorites가 이미 FavoriteItem[] 형태로 저장되어 있음
-        const items: FavoriteItem[] =
-          profile &&
-          Array.isArray((profile as { favorites?: unknown[] }).favorites)
-            ? ((profile as { favorites: unknown[] })
-                .favorites as FavoriteItem[])
-            : [];
-
-        setFavoriteItems(items);
-      } catch (error) {
-        if (!abortController.signal.aborted) {
-          console.error("Error fetching favorites:", error);
-          setFavoriteItems([]);
-        }
-      } finally {
-        if (!abortController.signal.aborted) {
-          setIsLoading(false);
-        }
-      }
-    };
-
-    fetchFavorites();
-
-    return () => {
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort();
-      }
-    };
-  }, [userId]);
-
-  return { favoriteItems, isLoading };
+  return {
+    favoriteItems: data ?? [],
+    isLoading,
+  };
 };

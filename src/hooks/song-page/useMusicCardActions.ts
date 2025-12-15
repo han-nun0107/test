@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { supabase } from "@/supabase/supabase";
 import { useEditSongStore } from "@/stores/editSongStore";
@@ -23,24 +23,27 @@ export const useMusicCardActions = (
     }
   }, [songData, setSongToEdit]);
 
-  const handleDeleteClick = useCallback(async () => {
+  const deleteSongMutation = useMutation({
+    mutationFn: async (id: number) => {
+      const { error } = await supabase.from("onusongdb").delete().eq("id", id);
+
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast.success("노래가 삭제되었습니다.");
+      queryClient.invalidateQueries({ queryKey: ["songs"] });
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || "삭제 중 오류가 발생했습니다.");
+    },
+  });
+
+  const handleDeleteClick = useCallback(() => {
     if (!songId) return;
     if (!confirm(`"${title}" 삭제할까요?`)) return;
 
-    const { error } = await supabase
-      .from("onusongdb")
-      .delete()
-      .eq("id", songId);
-
-    if (error) {
-      toast.error(error.message || "삭제 중 오류가 발생했습니다.");
-      return;
-    }
-
-    toast.success("노래가 삭제되었습니다.");
-    // 쿼리 무효화 (React Query가 자동으로 refetch함)
-    queryClient.invalidateQueries({ queryKey: ["songs"] });
-  }, [songId, title, queryClient]);
+    deleteSongMutation.mutate(songId);
+  }, [songId, title, deleteSongMutation]);
 
   return {
     handleEditClick,

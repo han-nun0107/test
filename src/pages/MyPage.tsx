@@ -41,7 +41,6 @@ export default function Mypage() {
         toast.error(result.error || "회원 탈퇴 중 오류가 발생했습니다.");
       }
     } catch (error) {
-      console.error("Delete account error:", error);
       setIsDeleteModalOpen(false);
       toast.error("회원 탈퇴 중 오류가 발생했습니다.");
     } finally {

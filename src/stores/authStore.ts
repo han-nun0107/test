@@ -46,6 +46,11 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
   fetchUserProfile: async (userId: string) => {
     try {
+      const currentProfile = get().userProfile;
+      if (currentProfile?.user_id === userId) {
+        return;
+      }
+
       await get().ensureUserProfileStats(userId);
 
       const { data, error } = await supabase
@@ -153,6 +158,13 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         if (session?.user?.id) {
           if (event === "SIGNED_IN") {
             await get().createUserRecord(session.user.id);
+          }
+          // SIGNED_IN 이벤트가 아니고 이미 같은 사용자면 스킵
+          if (
+            event !== "SIGNED_IN" &&
+            get().userProfile?.user_id === session.user.id
+          ) {
+            return;
           }
           await get().fetchUserProfile(session.user.id);
         } else {

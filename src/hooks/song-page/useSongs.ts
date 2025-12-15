@@ -17,8 +17,6 @@ export const useInfiniteSongs = () => {
       }
       return allPages.length;
     },
-    staleTime: 1000 * 60 * 5,
-    refetchOnWindowFocus: false,
   });
 };
 
@@ -26,8 +24,6 @@ export const useTotalSongCount = () => {
   return useQuery({
     queryKey: ["songs", "totalCount"],
     queryFn: fetchTotalSongCount,
-    staleTime: 1000 * 60 * 20,
-    refetchOnWindowFocus: false,
   });
 };
 
@@ -35,7 +31,5 @@ export const useAllSongs = () => {
   return useQuery({
     queryKey: ["songs", "all"],
     queryFn: fetchAllSongs,
-    staleTime: 1000 * 60 * 20,
-    refetchOnWindowFocus: false,
   });
 };
