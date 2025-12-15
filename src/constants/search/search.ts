@@ -147,6 +147,7 @@ export const SEARCH_MAPPINGS: Record<string, string[]> = {
   "아이유 (IU)": ["아이유", "IU", "이지은"],
   아이유: ["아이유", "IU", "이지은"],
   IU: ["아이유", "IU", "이지은"],
+  bule: ["blue"],
   악동뮤지션: ["악동뮤지션", "AKMU", "악뮤"],
   안예은: ["안예은", "AHN YEEUN", "AHNYEEUN"],
   알리: ["알리", "ALI"],
