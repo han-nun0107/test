@@ -15,14 +15,11 @@ export const useEditSong = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState<FormData>(INITIAL_FORM_DATA);
 
-  // songToEdit가 변경되면 폼에 데이터 채우기
   useEffect(() => {
     if (songToEdit) {
-      // 가수명: artist 또는 singer 필드 확인
       const artist =
         (songToEdit.artist as string) || (songToEdit.singer as string) || "";
 
-      // 카테고리: categories 또는 category 필드 확인
       let categories = "";
       if (songToEdit.categories) {
         if (Array.isArray(songToEdit.categories)) {
@@ -30,7 +27,18 @@ export const useEditSong = () => {
             .filter((cat): cat is string => typeof cat === "string")
             .join(", ");
         } else if (typeof songToEdit.categories === "string") {
-          categories = songToEdit.categories;
+          try {
+            const parsed = JSON.parse(songToEdit.categories);
+            if (Array.isArray(parsed)) {
+              categories = parsed
+                .filter((cat): cat is string => typeof cat === "string")
+                .join(", ");
+            } else {
+              categories = songToEdit.categories;
+            }
+          } catch {
+            categories = songToEdit.categories;
+          }
         }
       } else if (songToEdit.category) {
         if (Array.isArray(songToEdit.category)) {
@@ -38,7 +46,18 @@ export const useEditSong = () => {
             .filter((cat): cat is string => typeof cat === "string")
             .join(", ");
         } else if (typeof songToEdit.category === "string") {
-          categories = songToEdit.category;
+          try {
+            const parsed = JSON.parse(songToEdit.category);
+            if (Array.isArray(parsed)) {
+              categories = parsed
+                .filter((cat): cat is string => typeof cat === "string")
+                .join(", ");
+            } else {
+              categories = songToEdit.category;
+            }
+          } catch {
+            categories = songToEdit.category;
+          }
         }
       }
 
@@ -75,13 +94,23 @@ export const useEditSong = () => {
   );
 
   const preparePayload = useCallback((data: FormData) => {
+    let categoriesValue: string;
+    if (typeof data.categories === "string" && data.categories.trim()) {
+      const categoriesArray = data.categories
+        .split(",")
+        .map((cat) => cat.trim())
+        .filter((cat) => cat.length > 0);
+      categoriesValue = JSON.stringify(categoriesArray);
+    } else if (Array.isArray(data.categories)) {
+      categoriesValue = JSON.stringify(data.categories);
+    } else {
+      categoriesValue = data.categories;
+    }
+
     return {
       title: data.title.trim(),
       artist: data.artist.trim(),
-      categories: data.categories
-        .split(",")
-        .map((x) => x.trim())
-        .filter(Boolean),
+      categories: categoriesValue,
       key: data.key.trim(),
       transpose: 0,
       notes: data.notes.trim(),

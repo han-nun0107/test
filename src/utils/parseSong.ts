@@ -9,7 +9,6 @@ function isValidCategory(category: string): boolean {
 export function normalizeCategories(song: SongData): string[] {
   const categories: string[] = [];
 
-  // song.categories 처리
   if (song.categories) {
     if (Array.isArray(song.categories)) {
       categories.push(
@@ -22,7 +21,21 @@ export function normalizeCategories(song: SongData): string[] {
       typeof song.categories === "string" &&
       isValidCategory(song.categories)
     ) {
-      categories.push(song.categories);
+      try {
+        const parsed = JSON.parse(song.categories);
+        if (Array.isArray(parsed)) {
+          categories.push(
+            ...parsed.filter(
+              (cat): cat is string =>
+                typeof cat === "string" && isValidCategory(cat),
+            ),
+          );
+        } else {
+          categories.push(song.categories);
+        }
+      } catch {
+        categories.push(song.categories);
+      }
     }
   }
 
@@ -38,7 +51,21 @@ export function normalizeCategories(song: SongData): string[] {
       typeof song.category === "string" &&
       isValidCategory(song.category)
     ) {
-      categories.push(song.category);
+      try {
+        const parsed = JSON.parse(song.category);
+        if (Array.isArray(parsed)) {
+          categories.push(
+            ...parsed.filter(
+              (cat): cat is string =>
+                typeof cat === "string" && isValidCategory(cat),
+            ),
+          );
+        } else {
+          categories.push(song.category);
+        }
+      } catch {
+        categories.push(song.category);
+      }
     }
   }
 
