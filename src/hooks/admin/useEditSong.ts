@@ -127,7 +127,7 @@ export const useEditSong = () => {
   const resetForm = useCallback(() => {
     setFormData(INITIAL_FORM_DATA);
     setEditingId(null);
-    setIsSubmitting(false); // 🔥 이것 추가!
+    setIsSubmitting(false);  
     clearSongToEdit();
   }, [clearSongToEdit]);
 
@@ -135,9 +135,7 @@ export const useEditSong = () => {
     async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
-      // 중복 제출 방지
       if (isSubmitting) {
-        console.log("Already submitting, ignoring duplicate request");
         return;
       }
 
@@ -151,36 +149,33 @@ export const useEditSong = () => {
             .from("onusongdb")
             .upsert([updatePayload] as never, { onConflict: "id" });
 
-          if (error) {
-            console.error("Update error:", error);
+          if (error) {    
             toast.error(error.message || "수정 중 오류가 발생했습니다.");
-            setIsSubmitting(false); // 🔥 에러 시에도 리셋
+            setIsSubmitting(false);  
             return;
           }
 
           toast.success("노래가 수정되었습니다.");
           await queryClient.invalidateQueries({ queryKey: ["songs"] });
-          resetForm(); // resetForm 안에서 setIsSubmitting(false) 호출됨
+          resetForm();  
         } else {
           const { error } = await supabase
             .from("onusongdb")
             .insert([payload] as never);
 
           if (error) {
-            console.error("Insert error:", error);
             toast.error(error.message || "추가 중 오류가 발생했습니다.");
-            setIsSubmitting(false); // 🔥 에러 시에도 리셋
+            setIsSubmitting(false);  
             return;
           }
 
           toast.success("노래가 추가되었습니다.");
           await queryClient.invalidateQueries({ queryKey: ["songs"] });
-          resetForm(); // resetForm 안에서 setIsSubmitting(false) 호출됨
+          resetForm();  
         }
       } catch (error) {
-        console.error("Submit error:", error);
         toast.error("알 수 없는 오류가 발생했습니다.");
-        setIsSubmitting(false); // 🔥 catch에서도 리셋
+        setIsSubmitting(false); 
       }
     },
     [formData, editingId, preparePayload, queryClient, resetForm, isSubmitting],
