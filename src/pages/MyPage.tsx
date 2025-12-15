@@ -8,11 +8,7 @@ import { useAuthStore } from "@/stores/authStore";
 import { useUserFavorites } from "@/hooks";
 
 export default function Mypage() {
-  const userProfile = useAuthStore((state) => state.userProfile) as {
-    avatar_url: string;
-    email: string;
-    created_at: string;
-  };
+  const userProfile = useAuthStore((state) => state.userProfile);
   const userId = useAuthStore((state) => state.user?.id);
   const { favoriteItems } = useUserFavorites(userId);
 
@@ -24,7 +20,15 @@ export default function Mypage() {
         <h1 className="mt-6 mb-2 animate-[subtleHologram_5s_ease-in-out_infinite] bg-[linear-gradient(45deg,#6366f1,#8b5cf6,#ec4899,#f59e0b)] bg-size-[300%_300%] bg-clip-text text-2xl font-extrabold text-transparent sm:mt-10 sm:text-3xl md:text-4xl">
           내 정보
         </h1>
-        <UserInfo user={userProfile ?? {}} />
+        <UserInfo
+          user={
+            userProfile ?? {
+              avatar_url: "",
+              email: "",
+              created_at: "",
+            }
+          }
+        />
         <UserFavorite favoriteSingsLength={favoriteSingsLength} />
         <UserFavoritesStats favoriteItems={favoriteItems} />
         <div className="mt-10 mb-6 flex flex-col items-center justify-center gap-2 px-4 sm:mt-25 sm:mb-10">

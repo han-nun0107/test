@@ -24,6 +24,7 @@ type AuthState = {
   setLoading: (isLoading: boolean) => void;
   initializeAuth: () => Promise<void>;
   fetchUserProfile: (userId: string) => Promise<void>;
+  ensureUserProfileStats: (userId: string) => Promise<void>;
   signOut: () => Promise<void>;
 };
 
@@ -40,22 +41,55 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
   fetchUserProfile: async (userId: string) => {
     try {
+      // 회원가입 시 user_profile_stats 초기 레코드 생성
+      await get().ensureUserProfileStats(userId);
+
       const { data, error } = await supabase
         .from("user_profile_stats")
         .select("*")
         .eq("user_id", userId)
         .single();
 
-      if (error) {
+      if (error || !data) {
         console.error("Error fetching user profile:", error);
         set({ userProfile: null });
         return;
       }
 
-      set({ userProfile: data });
+      // Supabase Auth에서 이메일과 가입일 정보 가져오기
+      const currentUser = get().user;
+      const userProfile: UserProfileStats = Object.assign(
+        {},
+        data as UserProfileStats,
+        {
+          email: currentUser?.email ?? undefined,
+          created_at: currentUser?.created_at ?? undefined,
+        },
+      );
+
+      set({ userProfile });
     } catch (error) {
       console.error("Error fetching user profile:", error);
       set({ userProfile: null });
+    }
+  },
+
+  ensureUserProfileStats: async (userId: string) => {
+    const { data: profile } = await supabase
+      .from("user_profile_stats")
+      .select("user_id")
+      .eq("user_id", userId)
+      .maybeSingle();
+
+    if (!profile) {
+      // 레코드가 없으면 초기 레코드 생성
+      const { error } = await supabase
+        .from("user_profile_stats")
+        .insert([{ user_id: userId, favorites: [] }] as never);
+
+      if (error) {
+        console.error("user_profile_stats 초기 레코드 생성 실패:", error);
+      }
     }
   },
 
