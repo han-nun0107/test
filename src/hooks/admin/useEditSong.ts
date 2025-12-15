@@ -139,7 +139,6 @@ export const useEditSong = () => {
 
       try {
         let error = null;
-        let result = null;
 
         if (editingId) {
           const updatePayload = { ...payload, id: editingId };
@@ -147,13 +146,11 @@ export const useEditSong = () => {
             .from("onusongdb")
             .upsert([updatePayload] as never, { onConflict: "id" });
           error = response.error;
-          result = response.data;
         } else {
           const response = await supabase
             .from("onusongdb")
             .insert([payload] as never);
           error = response.error;
-          result = response.data;
         }
 
         if (error) {
