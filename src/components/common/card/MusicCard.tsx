@@ -53,7 +53,6 @@ export default function MusicCard({
     window.open(youtubeUrl, "_blank");
   }, [youtubeUrl]);
 
-  console.log(categories);
   return (
     <article className="flex h-auto w-full max-w-[224.4px] min-w-[224.4px] flex-col items-center justify-center">
       <div className="flex h-70 w-full flex-col gap-1.5 overflow-hidden rounded-xl shadow-lg transition-all duration-300 hover:scale-105">

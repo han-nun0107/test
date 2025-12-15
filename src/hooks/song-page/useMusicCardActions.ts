@@ -38,7 +38,8 @@ export const useMusicCardActions = (
     }
 
     toast.success("노래가 삭제되었습니다.");
-    await queryClient.invalidateQueries({ queryKey: ["songs"] });
+    // 쿼리 무효화 (React Query가 자동으로 refetch함)
+    queryClient.invalidateQueries({ queryKey: ["songs"] });
   }, [songId, title, queryClient]);
 
   return {
@@ -46,4 +47,3 @@ export const useMusicCardActions = (
     handleDeleteClick,
   };
 };
-

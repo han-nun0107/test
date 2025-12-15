@@ -124,6 +124,12 @@ export const useEditSong = () => {
     };
   }, []);
 
+  const resetForm = useCallback(() => {
+    setFormData(INITIAL_FORM_DATA);
+    setEditingId(null);
+    clearSongToEdit();
+  }, [clearSongToEdit]);
+
   const handleSubmit = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
@@ -133,16 +139,21 @@ export const useEditSong = () => {
 
       try {
         let error = null;
+        let result = null;
 
         if (editingId) {
           const updatePayload = { ...payload, id: editingId };
-          ({ error } = await supabase
+          const response = await supabase
             .from("onusongdb")
-            .upsert([updatePayload] as never, { onConflict: "id" }));
+            .upsert([updatePayload] as never, { onConflict: "id" });
+          error = response.error;
+          result = response.data;
         } else {
-          ({ error } = await supabase
+          const response = await supabase
             .from("onusongdb")
-            .insert([payload] as never));
+            .insert([payload] as never);
+          error = response.error;
+          result = response.data;
         }
 
         if (error) {
@@ -151,24 +162,17 @@ export const useEditSong = () => {
           toast.success(
             editingId ? "노래가 수정되었습니다." : "노래가 추가되었습니다.",
           );
+          queryClient.invalidateQueries({ queryKey: ["songs"] });
           resetForm();
-          await queryClient.invalidateQueries({ queryKey: ["songs"] });
         }
       } catch (error) {
         toast.error("알 수 없는 오류가 발생했습니다.");
-        console.error(error);
       } finally {
         setIsSubmitting(false);
       }
     },
-    [formData, editingId, preparePayload, queryClient],
+    [formData, editingId, preparePayload, queryClient, resetForm],
   );
-
-  const resetForm = useCallback(() => {
-    setFormData(INITIAL_FORM_DATA);
-    setEditingId(null);
-    clearSongToEdit();
-  }, [clearSongToEdit]);
 
   const deleteSong = useCallback(
     async (songId: number) => {
@@ -186,11 +190,10 @@ export const useEditSong = () => {
           toast.error(error.message || "삭제 중 오류가 발생했습니다.");
         } else {
           toast.success("노래가 삭제되었습니다.");
-          await queryClient.invalidateQueries({ queryKey: ["songs"] });
+          queryClient.invalidateQueries({ queryKey: ["songs"] });
         }
       } catch (error) {
         toast.error("알 수 없는 오류가 발생했습니다.");
-        console.error(error);
       }
     },
     [queryClient],
