@@ -52,7 +52,30 @@ export default function Mypage() {
   return (
     <section className="flex min-h-screen flex-col items-center justify-center overflow-x-hidden bg-linear-to-br from-[#fdfbfb] to-[#ebedee] p-4">
       <div className="custom-scrollbar flex h-auto max-h-[90vh] w-full max-w-[95vw] flex-col items-center overflow-x-hidden overflow-y-auto rounded-2xl border border-[#a21caf]/14 bg-[#fbfbfb]/70 shadow-[0_8px_40px_rgba(78,205,196,0.09)] sm:h-200 sm:w-118 sm:rounded-4xl">
-        <h1 className="mt-6 mb-2 animate-[subtleHologram_5s_ease-in-out_infinite] bg-[linear-gradient(45deg,#6366f1,#8b5cf6,#ec4899,#f59e0b)] bg-size-[300%_300%] bg-clip-text text-2xl font-extrabold text-transparent sm:mt-10 sm:text-3xl md:text-4xl">
+        <div className="mt-6 flex w-full items-center justify-start px-4 sm:mt-10">
+          <Button
+            variant="ICON_BUTTON"
+            onClick={() => navigate("/")}
+            className="rounded-full p-2 hover:bg-gray-200"
+            aria-label="메인 페이지로 이동"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6 text-gray-700"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+              />
+            </svg>
+          </Button>
+        </div>
+        <h1 className="mb-2 animate-[subtleHologram_5s_ease-in-out_infinite] bg-[linear-gradient(45deg,#6366f1,#8b5cf6,#ec4899,#f59e0b)] bg-size-[300%_300%] bg-clip-text text-2xl font-extrabold text-transparent sm:text-3xl md:text-4xl">
           내 정보
         </h1>
         <UserInfo
