@@ -16,6 +16,7 @@ export { default as Portal } from "./common/modal/Portal";
 export { default as MusicCard } from "./common/card/MusicCard";
 export { default as Tag } from "./common/Tag";
 export { default as Modal } from "./common/Modal";
+export { default as ContactForm } from "./common/ContactForm";
 export { default as CategoryModal } from "./common/modal/CategoryModal";
 export { default as SingerModal } from "./common/modal/SingerModal";
 export { default as LoadingState } from "./common/LoadingState";

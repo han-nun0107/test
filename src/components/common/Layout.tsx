@@ -16,6 +16,8 @@ import {
   SortPanel,
   FilterPanel,
   ToggleButtonGroup,
+  Modal,
+  ContactForm,
 } from "@/components";
 
 type LayoutProps = {
@@ -29,6 +31,7 @@ export default function Layout({ children, toggleButtons = [] }: LayoutProps) {
     isSearchOpen,
     isSortOpen,
     isFilterOpen,
+    isContactOpen,
     toggleLeftMenu,
     toggleSort,
     toggleFilter,
@@ -36,6 +39,7 @@ export default function Layout({ children, toggleButtons = [] }: LayoutProps) {
     closeSearch,
     closeSort,
     closeFilter,
+    closeContact,
   } = useLayoutStore();
   const { searchQuery, setSearchQuery, clearSearch } = useSearchStore();
   const { isEditMode } = useEditModeStore();
@@ -93,6 +97,12 @@ export default function Layout({ children, toggleButtons = [] }: LayoutProps) {
       <SortPanel isOpen={isSortOpen} onClose={closeSort} />
 
       <FilterPanel isOpen={isFilterOpen} onClose={closeFilter} />
+
+      <Modal isOpen={isContactOpen} onClose={closeContact} title="건의사항">
+        <div className="mt-6 w-full max-w-md">
+          <ContactForm />
+        </div>
+      </Modal>
 
       <ToggleButtonGroup buttons={buttons} />
     </div>

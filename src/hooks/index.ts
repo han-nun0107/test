@@ -21,3 +21,4 @@ export { useSearchSongs } from "./song-page/useSearchSongs";
 export { useNavigation } from "./useNavigation";
 export { useLayoutHandlers } from "./layout/useLayoutHandlers";
 export { useEditSong } from "./admin/useEditSong";
+export { useContactForm } from "./contact/useContactForm";

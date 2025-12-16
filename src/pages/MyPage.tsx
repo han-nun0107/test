@@ -5,13 +5,14 @@ import {
   UserFavorite,
   UserFavoritesStats,
 } from "@/components/mypage";
-import { Button, Modal } from "@/components";
+import { Button, Modal, ContactForm } from "@/components";
 import { useAuthStore } from "@/stores/authStore";
 import { useUserFavorites } from "@/hooks";
 import { toast } from "react-toastify";
 
 export default function Mypage() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const navigate = useNavigate();
   const userProfile = useAuthStore((state) => state.userProfile);
@@ -68,6 +69,13 @@ export default function Mypage() {
         <div className="mt-10 mb-6 flex flex-col items-center justify-center gap-2 px-4 sm:mt-25 sm:mb-10">
           <Button
             variant="MY_PAGE_BUTTON"
+            onClick={() => setIsContactModalOpen(true)}
+            className="bg-blue-500 hover:bg-blue-600"
+          >
+            건의사항
+          </Button>
+          <Button
+            variant="MY_PAGE_BUTTON"
             onClick={() => setIsDeleteModalOpen(true)}
             disabled={isDeleting}
           >
@@ -78,6 +86,16 @@ export default function Mypage() {
           </p>
         </div>
       </div>
+
+      <Modal
+        isOpen={isContactModalOpen}
+        onClose={() => setIsContactModalOpen(false)}
+        title="건의사항"
+      >
+        <div className="mt-6 w-full max-w-md">
+          <ContactForm />
+        </div>
+      </Modal>
 
       <Modal
         isOpen={isDeleteModalOpen}

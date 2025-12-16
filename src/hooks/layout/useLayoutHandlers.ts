@@ -6,7 +6,7 @@ import type { SongData } from "@/api/songdb";
 import { copyToClipboard } from "@/utils";
 
 export const useLayoutHandlers = () => {
-  const { closeLeftMenu } = useLayoutStore();
+  const { closeLeftMenu, toggleContact } = useLayoutStore();
   const { closeSearch } = useLayoutStore();
   const { navigateToAuth } = useNavigation();
   const { toggleEditMode } = useEditModeStore();
@@ -22,9 +22,12 @@ export const useLayoutHandlers = () => {
         case "profile":
           navigateToAuth();
           break;
+        case "contact":
+          toggleContact();
+          break;
       }
     },
-    [closeLeftMenu, navigateToAuth, toggleEditMode],
+    [closeLeftMenu, navigateToAuth, toggleEditMode, toggleContact],
   );
 
   const handleSongClick = useCallback(
