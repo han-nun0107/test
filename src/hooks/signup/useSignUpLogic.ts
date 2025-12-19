@@ -1,36 +1,15 @@
 import { useMemo, useState, useCallback } from "react";
-import { useSignUp, useGoogleSignUp } from "@/hooks";
-import type { SignUpMethod } from "@/types/signup/signup";
+import { useSignUp } from "@/hooks";
 
 export const useSignUpLogic = () => {
   const [ageChecked, setAgeChecked] = useState(false);
   const [consentChecked, setConsentChecked] = useState(false);
-  const [signUpMethod, setSignUpMethod] = useState<SignUpMethod>("email");
 
-  const {
-    handleSignUp,
-    errorMessage: emailErrorMessage,
-    isLoading: isEmailLoading,
-  } = useSignUp();
-  const {
-    handleGoogleSignUp,
-    errorMessage: googleErrorMessage,
-    isLoading: isGoogleLoading,
-  } = useGoogleSignUp();
+  const { handleSignUp, errorMessage, isLoading } = useSignUp();
 
   const hasAllConsent = useMemo(
     () => ageChecked && consentChecked,
     [ageChecked, consentChecked],
-  );
-
-  const isLoading = useMemo(
-    () => (signUpMethod === "email" ? isEmailLoading : isGoogleLoading),
-    [signUpMethod, isEmailLoading, isGoogleLoading],
-  );
-
-  const errorMessage = useMemo(
-    () => (signUpMethod === "email" ? emailErrorMessage : googleErrorMessage),
-    [signUpMethod, emailErrorMessage, googleErrorMessage],
   );
 
   const isButtonDisabled = useMemo(
@@ -54,13 +33,6 @@ export const useSignUpLogic = () => {
     [hasAllConsent, handleSignUp],
   );
 
-  const handleGoogleSignUpClick = useCallback(() => {
-    if (!hasAllConsent) {
-      return;
-    }
-    handleGoogleSignUp(hasAllConsent);
-  }, [hasAllConsent, handleGoogleSignUp]);
-
   const handleConsentChange = useCallback(
     (key: "ageChecked" | "consentChecked", checked: boolean) => {
       if (key === "ageChecked") {
@@ -72,22 +44,15 @@ export const useSignUpLogic = () => {
     [],
   );
 
-  const handleSignUpMethodChange = useCallback((method: SignUpMethod) => {
-    setSignUpMethod(method);
-  }, []);
-
   return {
     ageChecked,
     consentChecked,
-    signUpMethod,
     hasAllConsent,
     isLoading,
     errorMessage,
     isButtonDisabled,
     buttonClassName,
     handleEmailSignUp,
-    handleGoogleSignUpClick,
     handleConsentChange,
-    handleSignUpMethodChange,
   };
 };

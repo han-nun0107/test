@@ -1,30 +1,25 @@
 import { memo } from "react";
 import { useNavigate } from "react-router";
-import { Button, ConsentCheckbox, LoginMethodButton } from "@/components";
+import { Button, ConsentCheckbox } from "@/components";
 import SignUpHeader from "@/components/signup/SignUpHeader";
 import SignUpForm from "@/components/signup/SignUpForm";
-import GoogleSignUpButton from "@/components/signup/GoogleSignUpButton";
 import SignUpFooter from "@/components/signup/SignUpFooter";
 import { useSignUpLogic } from "@/hooks/signup/useSignUpLogic";
 import { useSignUpForm } from "@/hooks/signup/useSignUpForm";
 import { ArrowLeft } from "lucide-react";
 import { CONSENT_CHECKBOXES } from "@/constants/login/loginConstants";
-import { SIGNUP_METHODS } from "@/constants/signup/signupConstants";
 
 function SignUp() {
   const navigate = useNavigate();
   const {
     ageChecked,
     consentChecked,
-    signUpMethod,
     isLoading,
     errorMessage,
     isButtonDisabled,
     buttonClassName,
     handleEmailSignUp,
-    handleGoogleSignUpClick,
     handleConsentChange,
-    handleSignUpMethodChange,
   } = useSignUpLogic();
 
   const {
@@ -68,39 +63,17 @@ function SignUp() {
           ))}
         </div>
 
-        <div className="flex w-full gap-2">
-          {SIGNUP_METHODS.map((method) => (
-            <LoginMethodButton
-              key={method.id}
-              id={method.id}
-              label={method.label}
-              value={method.value}
-              isActive={signUpMethod === method.value}
-              onClick={() => handleSignUpMethodChange(method.value)}
-            />
-          ))}
-        </div>
-
-        {signUpMethod === "email" ? (
-          <SignUpForm
-            onSubmit={onSubmit}
-            register={register}
-            errors={errors}
-            emailValidation={emailValidation}
-            passwordValidation={passwordValidation}
-            confirmPasswordValidation={confirmPasswordValidation}
-            isLoading={isLoading}
-            isButtonDisabled={isButtonDisabled}
-            buttonClassName={buttonClassName}
-          />
-        ) : (
-          <GoogleSignUpButton
-            onClick={handleGoogleSignUpClick}
-            isLoading={isLoading}
-            isButtonDisabled={isButtonDisabled}
-            buttonClassName={buttonClassName}
-          />
-        )}
+        <SignUpForm
+          onSubmit={onSubmit}
+          register={register}
+          errors={errors}
+          emailValidation={emailValidation}
+          passwordValidation={passwordValidation}
+          confirmPasswordValidation={confirmPasswordValidation}
+          isLoading={isLoading}
+          isButtonDisabled={isButtonDisabled}
+          buttonClassName={buttonClassName}
+        />
 
         {errorMessage && (
           <div className="mt-1 min-h-[1.8em] text-center text-sm text-rose-500">
