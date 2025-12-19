@@ -1,6 +1,6 @@
 import { useMemo, useState, useCallback } from "react";
-import { useContactForm } from "@/hooks/contact/useContactForm";
-import Button from "./Button";
+import { useContactForm } from "@/hooks";
+import { Button } from "@/components";
 
 const FORM_STYLES = {
   container: "flex flex-col gap-2",

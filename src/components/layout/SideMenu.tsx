@@ -1,7 +1,7 @@
 import { Button } from "@/components";
 import { CloseIcon } from "@/constants/layout/icons";
 import { cn } from "@/utils";
-import type { SideMenuProps } from "@/types/layout/sideMenu";
+import type { SideMenuProps } from "@/types";
 
 export default function SideMenu({
   isOpen,

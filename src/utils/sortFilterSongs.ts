@@ -1,7 +1,7 @@
 import type { SongData } from "@/api/songdb";
 import type { SortType, FilterType } from "@/stores/sortFilterStore";
-import { filterSongs } from "./songFilters";
-import { sortSongs } from "./songSorters";
+import { filterSongs } from "@/utils/songFilters";
+import { sortSongs } from "@/utils/songSorters";
 
 export function sortAndFilterSongs(
   songs: SongData[],

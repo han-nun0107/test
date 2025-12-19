@@ -2,8 +2,8 @@ import { useCallback } from "react";
 import { Button } from "@/components";
 import { cn } from "@/utils";
 import { CloseIcon, SearchIcon, ClearIcon } from "@/constants/layout/icons";
-import SearchResults from "./SearchResults";
-import type { SearchPanelProps } from "@/types/layout/searchPanel";
+import SearchResults from "@/components/layout/SearchResults";
+import type { SearchPanelProps } from "@/types";
 
 export default function SearchPanel({
   isOpen,

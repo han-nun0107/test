@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { Button } from "@/components";
-import GoogleIcon from "@/components/common/GoogleIcon";
+import { GoogleIcon } from "@/components";
 
 type GoogleSignUpButtonProps = {
   onClick: () => void;

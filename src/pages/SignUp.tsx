@@ -1,11 +1,13 @@
 import { memo } from "react";
 import { useNavigate } from "react-router";
-import { Button, ConsentCheckbox } from "@/components";
-import SignUpHeader from "@/components/signup/SignUpHeader";
-import SignUpForm from "@/components/signup/SignUpForm";
-import SignUpFooter from "@/components/signup/SignUpFooter";
-import { useSignUpLogic } from "@/hooks/signup/useSignUpLogic";
-import { useSignUpForm } from "@/hooks/signup/useSignUpForm";
+import {
+  Button,
+  ConsentCheckbox,
+  SignUpHeader,
+  SignUpForm,
+  SignUpFooter,
+} from "@/components";
+import { useSignUpLogic, useSignUpForm } from "@/hooks";
 import { ArrowLeft } from "lucide-react";
 import { CONSENT_CHECKBOXES } from "@/constants/login/loginConstants";
 

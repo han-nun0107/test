@@ -2,12 +2,27 @@ import Cookies from "js-cookie";
 
 const CONSENT_STORAGE_KEY = "user_consent";
 const CONSENT_COOKIE_KEY = "onu_user_consent";
-// 쿠키 만료일: 1년
 const COOKIE_EXPIRES_DAYS = 365;
 
 export type ConsentInfo = {
   consented: boolean;
   timestamp: string;
+};
+
+const saveCookie = (value: string): void => {
+  const expiresDate = new Date();
+  expiresDate.setTime(
+    expiresDate.getTime() + COOKIE_EXPIRES_DAYS * 24 * 60 * 60 * 1000,
+  );
+
+  const cookieString = `${CONSENT_COOKIE_KEY}=${encodeURIComponent(value)}; expires=${expiresDate.toUTCString()}; path=/; SameSite=Lax`;
+  document.cookie = cookieString;
+
+  Cookies.set(CONSENT_COOKIE_KEY, value, {
+    expires: COOKIE_EXPIRES_DAYS,
+    path: "/",
+    sameSite: "Lax",
+  });
 };
 
 export const saveConsentInfo = (consented: boolean): void => {
@@ -22,13 +37,9 @@ export const saveConsentInfo = (consented: boolean): void => {
 
     localStorage.setItem(CONSENT_STORAGE_KEY, consentJson);
 
-    Cookies.set(CONSENT_COOKIE_KEY, consentJson, {
-      expires: COOKIE_EXPIRES_DAYS,
-      path: "/",
-      sameSite: "Lax",
-    });
+    saveCookie(consentJson);
   } catch (error) {
-    return;
+    console.error("동의 정보 저장 오류:", error);
   }
 };
 
@@ -38,6 +49,7 @@ export const getConsentInfo = (): ConsentInfo | null => {
 
     if (!consentData) {
       consentData = Cookies.get(CONSENT_COOKIE_KEY) || null;
+
       if (consentData) {
         localStorage.setItem(CONSENT_STORAGE_KEY, consentData);
       }
@@ -48,6 +60,7 @@ export const getConsentInfo = (): ConsentInfo | null => {
     const parsed = JSON.parse(consentData) as ConsentInfo;
     return parsed?.consented === true ? parsed : null;
   } catch (error) {
+    console.error("동의 정보 조회 오류:", error);
     return null;
   }
 };
@@ -61,6 +74,6 @@ export const removeConsentInfo = (): void => {
     localStorage.removeItem(CONSENT_STORAGE_KEY);
     Cookies.remove(CONSENT_COOKIE_KEY, { path: "/" });
   } catch (error) {
-    return;
+    console.error("동의 정보 삭제 오류:", error);
   }
 };

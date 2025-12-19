@@ -1,5 +1,5 @@
 import type { SongData } from "@/api/songdb";
-import SongListModal from "./SongListModal";
+import SongListModal from "@/components/common/modal/SongListModal";
 
 type CategoryModalProps = {
   songs: SongData[];

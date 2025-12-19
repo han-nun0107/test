@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { Button, ConsentCheckbox } from "@/components";
 import { LoginMethodButton, EmailLoginForm } from "@/components";
-import GoogleIcon from "@/components/common/GoogleIcon";
+import { GoogleIcon } from "@/components";
 import { useLoginLogic } from "@/hooks";
 import { Link, useNavigate } from "react-router";
 import { ArrowLeft } from "lucide-react";

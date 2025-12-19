@@ -1,4 +1,4 @@
-import { cn } from "@/utils/cn";
+import { cn } from "@/utils";
 import {
   BUTTON_VARIANTS,
   DEFAULT_BUTTON_VARIANT,

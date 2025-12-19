@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import type { SongData } from "@/api/songdb";
 import { normalizeSinger } from "@/utils";
-import { useGroupedData } from "./useGroupedData";
+import { useGroupedData } from "@/hooks/song-page/useGroupedData";
 
 export const useSinger = (allSongs: SongData[] | undefined) => {
   const extractSingerKey = useMemo(

@@ -1,4 +1,4 @@
-import { normalizeSinger, normalizeCategories } from "@/utils/parseSong";
+import { normalizeSinger, normalizeCategories } from "@/utils";
 import type { SongData } from "@/api/songdb";
 
 type SearchResultsProps = {
@@ -17,7 +17,7 @@ export default function SearchResults({
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-6 sm:py-8">
-        <div className="text-sm sm:text-base text-gray-400">검색 중...</div>
+        <div className="text-sm text-gray-400 sm:text-base">검색 중...</div>
       </div>
     );
   }
@@ -25,7 +25,9 @@ export default function SearchResults({
   if (!searchQuery.trim()) {
     return (
       <div className="flex items-center justify-center py-6 sm:py-8">
-        <div className="text-center text-sm sm:text-base text-gray-400">검색어를 입력해주세요</div>
+        <div className="text-center text-sm text-gray-400 sm:text-base">
+          검색어를 입력해주세요
+        </div>
       </div>
     );
   }
@@ -33,14 +35,16 @@ export default function SearchResults({
   if (searchResults.length === 0) {
     return (
       <div className="flex items-center justify-center py-6 sm:py-8">
-        <div className="text-center text-sm sm:text-base text-gray-400">검색 결과가 없습니다</div>
+        <div className="text-center text-sm text-gray-400 sm:text-base">
+          검색 결과가 없습니다
+        </div>
       </div>
     );
   }
 
   return (
     <div className="space-y-2">
-      <div className="mb-2 text-xs sm:text-sm text-gray-500">
+      <div className="mb-2 text-xs text-gray-500 sm:text-sm">
         {searchResults.length}개의 결과
       </div>
       {searchResults.map((song) => {
@@ -52,12 +56,12 @@ export default function SearchResults({
           <div
             key={song.id ?? song.key}
             onClick={handleClick}
-            className="cursor-pointer rounded-lg border border-gray-200 p-2 sm:p-3 transition-colors hover:bg-gray-50"
+            className="cursor-pointer rounded-lg border border-gray-200 p-2 transition-colors hover:bg-gray-50 sm:p-3"
           >
-            <div className="font-medium text-sm sm:text-base text-gray-800 truncate">
+            <div className="truncate text-sm font-medium text-gray-800 sm:text-base">
               {song.title || "제목 없음"}
             </div>
-            <div className="mt-1 text-xs sm:text-sm text-gray-600 truncate">
+            <div className="mt-1 truncate text-xs text-gray-600 sm:text-sm">
               {normalizeSinger(song) || "가수 없음"}
             </div>
             {categories.length > 0 && (
@@ -65,7 +69,7 @@ export default function SearchResults({
                 {categories.map((cat, idx) => (
                   <span
                     key={idx}
-                    className="rounded-full bg-indigo-100 px-1.5 sm:px-2 py-0.5 text-[10px] sm:text-xs text-indigo-700"
+                    className="rounded-full bg-indigo-100 px-1.5 py-0.5 text-[10px] text-indigo-700 sm:px-2 sm:text-xs"
                   >
                     {cat}
                   </span>

@@ -6,13 +6,7 @@ import {
   User,
   UserPlus,
 } from "lucide-react";
-import type { ReactNode } from "react";
-
-export type MenuItem = {
-  icon: ReactNode;
-  label: string;
-  onClick: () => void;
-};
+import type { MenuItem } from "@/types";
 
 export const createMenuItems = (
   onMenuClick: (action: string) => void,

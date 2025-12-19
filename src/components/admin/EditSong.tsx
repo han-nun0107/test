@@ -1,5 +1,5 @@
 import { useMemo, useCallback } from "react";
-import { useEditSong } from "@/hooks/admin/useEditSong";
+import { useEditSong } from "@/hooks";
 import {
   FORM_FIELDS,
   CHECKBOX_FIELDS,

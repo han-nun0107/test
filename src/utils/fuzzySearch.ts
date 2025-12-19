@@ -1,7 +1,7 @@
 import Fuse, { type IFuseOptions } from "fuse.js";
 import type { SongData } from "@/api/songdb";
-import { normalizeSinger, normalizeCategories } from "./parseSong";
-import { expandSearchQuery } from "./searchMappings";
+import { normalizeSinger, normalizeCategories } from "@/utils/parseSong";
+import { expandSearchQuery } from "@/utils/searchMappings";
 
 type SearchableSong = {
   title: string;

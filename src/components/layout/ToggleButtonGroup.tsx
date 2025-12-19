@@ -1,13 +1,6 @@
 import { Button } from "@/components";
 import { cn } from "@/utils";
-
-type ToggleButton = {
-  id: string;
-  label: string;
-  icon?: React.ReactNode;
-  onClick: () => void;
-  active?: boolean;
-};
+import type { ToggleButton } from "@/types";
 
 type ToggleButtonGroupProps = {
   buttons: ToggleButton[];
@@ -19,9 +12,7 @@ const buttonGradients = [
   "from-pink-400 to-orange-400",
 ];
 
-export default function ToggleButtonGroup({
-  buttons,
-}: ToggleButtonGroupProps) {
+export default function ToggleButtonGroup({ buttons }: ToggleButtonGroupProps) {
   return (
     <div className="fixed right-2 bottom-2 z-50 flex flex-col items-center gap-3 sm:right-4 sm:bottom-4 md:right-8 md:bottom-6">
       {buttons.map((button, index) => {

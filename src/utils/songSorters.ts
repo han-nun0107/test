@@ -1,6 +1,6 @@
 import type { SongData } from "@/api/songdb";
 import type { SortType } from "@/stores/sortFilterStore";
-import { normalizeSinger } from "./parseSong";
+import { normalizeSinger } from "@/utils/parseSong";
 
 type SortMode = "title" | "singer" | "skill" | "latest";
 type SortOrder = "asc" | "desc";

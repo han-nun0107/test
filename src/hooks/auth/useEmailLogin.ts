@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import { supabase } from "@/supabase/supabase";
 import { useAuthStore } from "@/stores/authStore";
-import { saveConsentInfo } from "@/utils/consentStorage";
+import { saveConsentInfo } from "@/utils";
 import { toast } from "react-toastify";
 
 export const useEmailLogin = () => {

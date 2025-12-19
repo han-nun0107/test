@@ -1,7 +1,6 @@
 import { useMemo } from "react";
-import { useAllSongs } from "./useSongs";
-import { useDebounce } from "@/hooks";
-import { fuzzySearchSongs } from "@/utils/fuzzySearch";
+import { useAllSongs, useDebounce } from "@/hooks";
+import { fuzzySearchSongs } from "@/utils";
 
 export function useSearchSongs(searchQuery: string) {
   const { data: allSongs, isLoading } = useAllSongs();

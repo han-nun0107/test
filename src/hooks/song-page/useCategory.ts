@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import type { SongData } from "@/api/songdb";
 import { mapToCategory } from "@/utils";
-import { useGroupedData } from "./useGroupedData";
+import { useGroupedData } from "@/hooks/song-page/useGroupedData";
 
 export const useCategory = (allSongs: SongData[] | undefined) => {
   const extractCategoryKeys = useMemo(

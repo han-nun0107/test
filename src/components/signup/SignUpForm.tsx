@@ -6,7 +6,7 @@ import type {
   FieldErrors,
   RegisterOptions,
 } from "react-hook-form";
-import type { SignUpFormData } from "@/types/signup/signup";
+import type { SignUpFormData } from "@/types";
 
 type SignUpFormProps = {
   onSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;

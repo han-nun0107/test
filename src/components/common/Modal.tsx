@@ -3,7 +3,7 @@ import { Button, Icon, Portal } from "@/components";
 import { PORTAL_CONTAINER_ID } from "@/constants";
 import { Z_INDEX } from "@/foundations";
 import { useModal } from "@/hooks";
-import { cn } from "@/utils/cn";
+import { cn } from "@/utils";
 import { type ReactNode } from "react";
 import FocusLock from "react-focus-lock";
 
@@ -53,7 +53,7 @@ const Modal = ({
             {title && (
               <h2
                 id="modal-title"
-                className="text-center text-xl sm:text-2xl md:text-[32px] font-bold whitespace-pre-wrap text-[#333]"
+                className="text-center text-xl font-bold whitespace-pre-wrap text-[#333] sm:text-2xl md:text-[32px]"
               >
                 {title}
               </h2>

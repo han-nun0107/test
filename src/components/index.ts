@@ -24,6 +24,7 @@ export { default as EmptyState } from "./common/EmptyState";
 export { default as GridContainer } from "./common/GridContainer";
 export { default as LoadingIndicator } from "./common/LoadingIndicator";
 export { default as Layout } from "./common/Layout";
+export { default as ProtectedRoute } from "./common/ProtectedRoute";
 export { default as SideMenu } from "./layout/SideMenu";
 export { default as SearchPanel } from "./layout/SearchPanel";
 export { default as SortPanel } from "./layout/SortPanel";

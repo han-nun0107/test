@@ -1,37 +1,16 @@
 import { create } from "zustand";
-import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/supabase/supabase";
-import { getConsentInfo, removeConsentInfo } from "@/utils/consentStorage";
+import { getConsentInfo } from "@/utils";
+import type { AuthState, UserProfileStats } from "@/types";
 
-type UserProfileStats = {
-  user_id: string;
-  email?: string;
-  avatar_url?: string;
-  created_at?: string;
-  favorite_count?: number;
-  request_count?: number;
-  last_requested_song?: string;
-  [key: string]: unknown;
+const getKoreaTimeISO = (): string => {
+  const now = new Date();
+  const koreaTime = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+  return koreaTime.toISOString();
 };
 
-type AuthState = {
-  session: Session | null;
-  user: User | null;
-  userProfile: UserProfileStats | null;
-  isLoading: boolean;
-  setSession: (session: Session | null) => void;
-  setUser: (user: User | null) => void;
-  setUserProfile: (userProfile: UserProfileStats | null) => void;
-  setLoading: (isLoading: boolean) => void;
-  initializeAuth: () => Promise<void>;
-  fetchUserProfile: (userId: string) => Promise<void>;
-  ensureUserProfileStats: (userId: string) => Promise<void>;
-  createUserRecord: (userId: string) => Promise<void>;
-  checkUserExists: (userId: string) => Promise<boolean>;
-  signOut: () => Promise<void>;
-  deleteAccount: (
-    userId: string,
-  ) => Promise<{ success: boolean; error?: string }>;
+const logError = (context: string, error: unknown) => {
+  console.error(`[${context}]`, error);
 };
 
 export const useAuthStore = create<AuthState>((set, get) => ({
@@ -45,12 +24,31 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   setUserProfile: (userProfile) => set({ userProfile }),
   setLoading: (isLoading) => set({ isLoading }),
 
+  ensureUserProfileStats: async (userId: string) => {
+    try {
+      const { data: profile } = await supabase
+        .from("user_profile_stats")
+        .select("user_id")
+        .eq("user_id", userId)
+        .maybeSingle();
+
+      if (profile) return;
+
+      const { error } = await supabase
+        .from("user_profile_stats")
+        .insert({ user_id: userId, favorites: [] } as never);
+
+      if (error && error.code !== "23505") {
+        logError("ensureUserProfileStats", error);
+      }
+    } catch (error) {
+      logError("ensureUserProfileStats", error);
+    }
+  },
+
   fetchUserProfile: async (userId: string) => {
     try {
-      const currentProfile = get().userProfile;
-      if (currentProfile?.user_id === userId) {
-        return;
-      }
+      if (get().userProfile?.user_id === userId) return;
 
       await get().ensureUserProfileStats(userId);
 
@@ -60,41 +58,29 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         .eq("user_id", userId)
         .single();
 
-      if (error || !data) {
+      if (error) {
+        logError("fetchUserProfile", error);
+        set({ userProfile: null });
+        return;
+      }
+
+      if (!data) {
         set({ userProfile: null });
         return;
       }
 
       const currentUser = get().user;
+      const profileData = data as UserProfileStats;
       const userProfile: UserProfileStats = {
-        ...(data as UserProfileStats),
+        ...profileData,
         email: currentUser?.email,
         created_at: currentUser?.created_at,
       };
 
       set({ userProfile });
     } catch (error) {
+      logError("fetchUserProfile", error);
       set({ userProfile: null });
-    }
-  },
-
-  ensureUserProfileStats: async (userId: string) => {
-    const { data: profile } = await supabase
-      .from("user_profile_stats")
-      .select("user_id")
-      .eq("user_id", userId)
-      .maybeSingle();
-
-    if (!profile) {
-      const { error } = await supabase
-        .from("user_profile_stats")
-        .insert([{ user_id: userId, favorites: [] }] as never);
-
-      if (error) {
-        if (error.code === "23505") {
-          return;
-        }
-      }
     }
   },
 
@@ -107,13 +93,13 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         .maybeSingle();
 
       if (error) {
-        console.error("회원 확인 오류:", error);
+        logError("checkUserExists", error);
         return false;
       }
 
       return !!data;
     } catch (error) {
-      console.error("회원 확인 오류:", error);
+      logError("checkUserExists", error);
       return false;
     }
   },
@@ -122,35 +108,29 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     try {
       const consentInfo = getConsentInfo();
 
-      if (!consentInfo) {
-        await get().ensureUserProfileStats(userId);
-        return;
-      }
-
-      const now = new Date();
-      const koreaTime = new Date(now.getTime() + 9 * 60 * 60 * 1000);
-      const koreaTimeISO = koreaTime.toISOString();
-
-      const { error: updateError } = await supabase.from("users").upsert(
-        [
+      if (consentInfo) {
+        const { error: updateError } = await supabase.from("users").upsert(
           {
             id: userId,
             consentgiven: true,
-            consentat: koreaTimeISO,
-          },
-        ] as never,
-        { onConflict: "id" },
-      );
+            consentat: getKoreaTimeISO(),
+          } as never,
+          { onConflict: "id" },
+        );
 
-      if (updateError) {
+        if (updateError) {
+          logError("createUserRecord:upsert", updateError);
+        }
       }
 
       await get().ensureUserProfileStats(userId);
-      removeConsentInfo();
     } catch (error) {
-      await get()
-        .ensureUserProfileStats(userId)
-        .catch(() => {});
+      logError("createUserRecord", error);
+      try {
+        await get().ensureUserProfileStats(userId);
+      } catch (retryError) {
+        logError("createUserRecord:retry", retryError);
+      }
     }
   },
 
@@ -181,18 +161,21 @@ export const useAuthStore = create<AuthState>((set, get) => ({
           if (event === "SIGNED_IN") {
             await get().createUserRecord(session.user.id);
           }
+
           if (
             event !== "SIGNED_IN" &&
             get().userProfile?.user_id === session.user.id
           ) {
             return;
           }
+
           await get().fetchUserProfile(session.user.id);
         } else {
           set({ userProfile: null });
         }
       });
     } catch (error) {
+      logError("initializeAuth", error);
       set({ isLoading: false });
     }
   },
@@ -205,7 +188,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         user: null,
         userProfile: null,
       });
-    } catch (error) {}
+    } catch (error) {
+      logError("signOut", error);
+    }
   },
 
   deleteAccount: async (userId: string) => {
@@ -216,6 +201,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         .eq("user_id", userId);
 
       if (profileError) {
+        logError("deleteAccount:profile", profileError);
         return { success: false, error: profileError.message };
       }
 
@@ -225,11 +211,13 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         .eq("id", userId);
 
       if (userError) {
+        logError("deleteAccount:user", userError);
       }
 
       const { error: authError } = await supabase.auth.signOut();
 
       if (authError) {
+        logError("deleteAccount:auth", authError);
       }
 
       set({
@@ -240,6 +228,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
       return { success: true };
     } catch (error) {
+      logError("deleteAccount", error);
       return {
         success: false,
         error:

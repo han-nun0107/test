@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import { supabase } from "@/supabase/supabase";
-import { saveConsentInfo } from "@/utils/consentStorage";
+import { saveConsentInfo } from "@/utils";
 
 export const useGoogleSignUp = () => {
   const [errorMessage, setErrorMessage] = useState("");

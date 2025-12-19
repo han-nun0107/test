@@ -5,7 +5,7 @@ import {
   type UseFormHandleSubmit,
   type RegisterOptions,
 } from "react-hook-form";
-import type { SignUpFormData } from "@/types/signup/signup";
+import type { SignUpFormData } from "@/types";
 
 type EmailValidation = RegisterOptions<SignUpFormData, "email">;
 type PasswordValidation = RegisterOptions<SignUpFormData, "password">;

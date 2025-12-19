@@ -1,13 +1,7 @@
 import { Filter, ListFilter, Menu } from "lucide-react";
-import type { ReactNode } from "react";
+import type { ToggleButton } from "@/types";
 
-export type ToggleButton = {
-  id: string;
-  label: string;
-  icon?: ReactNode;
-  onClick: () => void;
-  active?: boolean;
-};
+export type { ToggleButton };
 
 const MenuIcon = () => <Menu size={20} />;
 

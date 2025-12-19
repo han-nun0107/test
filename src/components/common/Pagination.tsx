@@ -1,8 +1,8 @@
 import NextIcon from "@/assets/icons/pagination/next.svg?react";
 import PrevIcon from "@/assets/icons/pagination/prev.svg?react";
 import { Button, Icon } from "@/components";
-import { usePagination } from "@/hooks/pagination/usePagination";
-import { cn } from "@/utils/cn";
+import { usePagination } from "@/hooks";
+import { cn } from "@/utils";
 
 type PaginationProps = {
   currentPage: number;
@@ -26,7 +26,10 @@ const Pagination = ({
   return (
     <nav
       aria-label="pagination"
-      className={cn("flex items-center justify-center gap-2 sm:gap-4", className)}
+      className={cn(
+        "flex items-center justify-center gap-2 sm:gap-4",
+        className,
+      )}
     >
       {/* 이전 버튼 */}
       <Button
@@ -44,7 +47,7 @@ const Pagination = ({
 
       {/* 페이지 목록 */}
       <ol className="flex gap-1 sm:gap-2">
-        {pages.map((page, idx) => {
+        {pages.map((page: number | string, idx: number) => {
           if (page === "...") {
             return (
               <li key={`dots-${idx}`}>

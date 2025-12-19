@@ -1,8 +1,6 @@
 import { lazy, Suspense } from "react";
 import { createBrowserRouter, Outlet } from "react-router";
-import ProtectedRoute from "@/components/common/ProtectedRoute";
-import Layout from "@/components/common/Layout";
-import LoadingIndicator from "@/components/common/LoadingIndicator";
+import { ProtectedRoute, Layout, LoadingIndicator } from "@/components";
 
 const LandingPage = lazy(() => import("@/pages/LandingPage"));
 const Login = lazy(() => import("@/pages/Login"));

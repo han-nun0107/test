@@ -1,14 +1,7 @@
-import type { ReactNode } from "react";
-
-export type MenuItem = {
-  icon: ReactNode;
-  label: string;
-  onClick: () => void;
-};
+import type { MenuItem } from "@/types";
 
 export type SideMenuProps = {
   isOpen: boolean;
   onClose: () => void;
   menuItems: MenuItem[];
 };
-

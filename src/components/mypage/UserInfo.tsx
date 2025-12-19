@@ -1,10 +1,6 @@
-type User = {
-  avatar_url?: string;
-  email?: string;
-  created_at?: string;
-};
+import type { SimpleUser } from "@/types";
 
-export default function UserInfo({ user }: { user: User }) {
+export default function UserInfo({ user }: { user: SimpleUser }) {
   const formattedDate = user.created_at
     ? new Date(user.created_at).toLocaleDateString("ko-KR", {
         year: "numeric",

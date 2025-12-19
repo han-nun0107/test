@@ -1,4 +1,4 @@
-import { convertYoutubeToThumbnail } from "@/utils/convertYoutubeToThumbnail";
+import { convertYoutubeToThumbnail } from "@/utils";
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/supabase/supabase";

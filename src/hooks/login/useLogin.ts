@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import { useAuthStore } from "@/stores/authStore";
 import { supabase } from "@/supabase/supabase";
-import { saveConsentInfo } from "@/utils/consentStorage";
+import { saveConsentInfo } from "@/utils";
 
 export const useLogin = () => {
   const [searchParams] = useSearchParams();

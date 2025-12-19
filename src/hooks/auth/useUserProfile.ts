@@ -1,17 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/supabase/supabase";
 import { useAuthStore } from "@/stores/authStore";
-
-type UserProfileStats = {
-  user_id: string;
-  email?: string;
-  avatar_url?: string;
-  created_at?: string;
-  favorite_count?: number;
-  request_count?: number;
-  last_requested_song?: string;
-  [key: string]: unknown;
-};
+import type { UserProfileStats } from "@/types";
 
 export const useUserProfile = (userId: string | undefined) => {
   const user = useAuthStore((state) => state.user);

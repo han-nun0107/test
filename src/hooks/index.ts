@@ -26,6 +26,8 @@ export { useContactForm } from "./contact/useContactForm";
 export { useSignUp } from "./auth/useSignUp";
 export { useEmailLogin } from "./auth/useEmailLogin";
 export { useGoogleSignUp } from "./auth/useGoogleSignUp";
+export { useLogin } from "./login/useLogin";
 export { useLoginLogic } from "./login/useLoginLogic";
 export { useSignUpLogic } from "./signup/useSignUpLogic";
 export { useSignUpForm } from "./signup/useSignUpForm";
+export { usePagination } from "./pagination/usePagination";

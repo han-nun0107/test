@@ -11,3 +11,6 @@ export * from "./songDeduplication";
 export * from "./scrollLock";
 export * from "./clipboard";
 export * from "./songCardData";
+export * from "./consentStorage";
+export * from "./isAdmin";
+export * from "./fuzzySearch";

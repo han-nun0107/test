@@ -1,9 +1,8 @@
 import { useMemo, useState, useCallback } from "react";
-import { useLogin } from "@/hooks/login/useLogin";
+import { useLogin } from "@/hooks";
 import { useEmailLogin } from "@/hooks";
-import { hasConsent, saveConsentInfo } from "@/utils/consentStorage";
-
-type LoginMethod = "email" | "google";
+import { hasConsent, saveConsentInfo } from "@/utils";
+import type { LoginMethod } from "@/types";
 
 export const useLoginLogic = () => {
   const [loginMethod, setLoginMethod] = useState<LoginMethod>("email");

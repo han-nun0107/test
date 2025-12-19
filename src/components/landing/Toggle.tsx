@@ -9,8 +9,7 @@ import {
 } from "@/constants/landing/toggleStyles";
 import { Button } from "@/components";
 import { cn } from "@/utils";
-import type { ToggleProps } from "@/types/landing/toggle";
-import type { ToggleItem } from "@/types/landing/landing";
+import type { ToggleProps, ToggleItem } from "@/types";
 
 export default function Toggle({ toggle, setToggle }: ToggleProps) {
   const activeIndex = useMemo(

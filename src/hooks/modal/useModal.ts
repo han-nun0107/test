@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { lockScroll, unlockScroll } from "@/utils/scrollLock";
+import { lockScroll, unlockScroll } from "@/utils";
 
 type UseModalProps = {
   isOpen: boolean;

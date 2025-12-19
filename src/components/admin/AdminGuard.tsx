@@ -1,5 +1,5 @@
 import { useSupabaseSession } from "@/provider/supabaseProvider";
-import { isAdmin } from "@/utils/isAdmin";
+import { isAdmin } from "@/utils";
 import { useEditModeStore } from "@/stores/editModeStore";
 import { Navigate } from "react-router";
 
