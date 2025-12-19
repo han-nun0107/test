@@ -27,6 +27,7 @@ type AuthState = {
   fetchUserProfile: (userId: string) => Promise<void>;
   ensureUserProfileStats: (userId: string) => Promise<void>;
   createUserRecord: (userId: string) => Promise<void>;
+  checkUserExists: (userId: string) => Promise<boolean>;
   signOut: () => Promise<void>;
   deleteAccount: (
     userId: string,
@@ -97,6 +98,26 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     }
   },
 
+  checkUserExists: async (userId: string): Promise<boolean> => {
+    try {
+      const { data, error } = await supabase
+        .from("users")
+        .select("id")
+        .eq("id", userId)
+        .maybeSingle();
+
+      if (error) {
+        console.error("회원 확인 오류:", error);
+        return false;
+      }
+
+      return !!data;
+    } catch (error) {
+      console.error("회원 확인 오류:", error);
+      return false;
+    }
+  },
+
   createUserRecord: async (userId: string) => {
     try {
       const consentInfo = getConsentInfo();
@@ -106,7 +127,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         return;
       }
 
-      // 한국 시간(KST, UTC+9)으로 변환
       const now = new Date();
       const koreaTime = new Date(now.getTime() + 9 * 60 * 60 * 1000);
       const koreaTimeISO = koreaTime.toISOString();
@@ -123,7 +143,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       );
 
       if (updateError) {
-        // Error handling
       }
 
       await get().ensureUserProfileStats(userId);
@@ -131,9 +150,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     } catch (error) {
       await get()
         .ensureUserProfileStats(userId)
-        .catch(() => {
-          // Error handling
-        });
+        .catch(() => {});
     }
   },
 
@@ -150,8 +167,11 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       });
 
       if (session?.user?.id) {
-        await get().createUserRecord(session.user.id);
-        await get().fetchUserProfile(session.user.id);
+        const userExists = await get().checkUserExists(session.user.id);
+        if (userExists) {
+          await get().createUserRecord(session.user.id);
+          await get().fetchUserProfile(session.user.id);
+        }
       }
 
       supabase.auth.onAuthStateChange(async (event, session) => {
@@ -162,9 +182,15 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
         if (session?.user?.id) {
           if (event === "SIGNED_IN") {
+            const userExists = await get().checkUserExists(session.user.id);
+
+            if (!userExists) {
+              await supabase.auth.signOut();
+              return;
+            }
+
             await get().createUserRecord(session.user.id);
           }
-          // SIGNED_IN 이벤트가 아니고 이미 같은 사용자면 스킵
           if (
             event !== "SIGNED_IN" &&
             get().userProfile?.user_id === session.user.id
@@ -189,9 +215,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         user: null,
         userProfile: null,
       });
-    } catch (error) {
-      // Error handling
-    }
+    } catch (error) {}
   },
 
   deleteAccount: async (userId: string) => {
@@ -211,7 +235,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         .eq("id", userId);
 
       if (userError) {
-        // Error handling
       }
 
       const { error: authError } = await supabase.auth.signOut();

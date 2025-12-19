@@ -27,3 +27,5 @@ export { useSignUp } from "./auth/useSignUp";
 export { useEmailLogin } from "./auth/useEmailLogin";
 export { useGoogleSignUp } from "./auth/useGoogleSignUp";
 export { useLoginLogic } from "./login/useLoginLogic";
+export { useSignUpLogic } from "./signup/useSignUpLogic";
+export { useSignUpForm } from "./signup/useSignUpForm";

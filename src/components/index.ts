@@ -36,3 +36,7 @@ export { default as ConsentCheckbox } from "./login/ConsentCheckbox";
 export { default as LoginMethodButton } from "./login/LoginMethodButton";
 export { default as EmailLoginForm } from "./login/EmailLoginForm";
 export { default as GoogleIcon } from "./common/GoogleIcon";
+export { default as SignUpHeader } from "./signup/SignUpHeader";
+export { default as SignUpForm } from "./signup/SignUpForm";
+export { default as GoogleSignUpButton } from "./signup/GoogleSignUpButton";
+export { default as SignUpFooter } from "./signup/SignUpFooter";

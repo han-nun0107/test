@@ -14,44 +14,15 @@ export const useLogin = () => {
   const session = useAuthStore((state) => state.session);
   const redirectParam = searchParams.get("redirect") || "/";
 
-  // users 테이블에서 회원 존재 여부 확인
-  const checkUserExists = useCallback(
-    async (userId: string): Promise<boolean> => {
-      try {
-        const { data, error } = await supabase
-          .from("users")
-          .select("id")
-          .eq("id", userId)
-          .maybeSingle();
-
-        if (error) {
-          console.error("회원 확인 오류:", error);
-          return false;
-        }
-
-        return !!data;
-      } catch (error) {
-        console.error("회원 확인 오류:", error);
-        return false;
-      }
-    },
-    [],
-  );
-
   useEffect(() => {
     const verifyAndRedirect = async () => {
+      if (!session && window.location.pathname === "/login") {
+        toast.error("회원가입이 필요합니다. 회원가입을 진행해주세요.");
+        navigate("/signup", { replace: true });
+        return;
+      }
+
       if (session?.user?.id) {
-        const userExists = await checkUserExists(session.user.id);
-
-        if (!userExists) {
-          // users 테이블에 없으면 로그아웃하고 회원가입 페이지로 이동
-          await supabase.auth.signOut();
-          toast.error("회원가입이 필요합니다. 회원가입을 진행해주세요.");
-          navigate("/signup", { replace: true });
-          return;
-        }
-
-        // 회원이 존재하면 정상적으로 리다이렉트
         if (redirectParam) {
           navigate(redirectParam, { replace: true });
         }
@@ -59,7 +30,7 @@ export const useLogin = () => {
     };
 
     verifyAndRedirect();
-  }, [session, navigate, redirectParam, checkUserExists]);
+  }, [session, navigate, redirectParam]);
 
   const handleLogin = useCallback(
     async (hasAllConsent: boolean) => {
