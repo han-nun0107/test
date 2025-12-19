@@ -59,8 +59,17 @@ export default function SignUp() {
   } = useGoogleSignUp();
 
   useEffect(() => {
+    const handleGoogleSignUpCallback = async () => {
+      if (session?.user?.id) {
+        // 구글 회원가입 후 users 테이블에 자동 생성
+        const { createUserRecord } = useAuthStore.getState();
+        await createUserRecord(session.user.id);
+        navigate("/", { replace: true });
+      }
+    };
+
     if (session) {
-      navigate("/", { replace: true });
+      handleGoogleSignUpCallback();
     }
   }, [session, navigate]);
 
