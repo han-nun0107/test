@@ -16,19 +16,6 @@ export const useLogin = () => {
 
   useEffect(() => {
     const verifyAndRedirect = async () => {
-      const signupRequired = sessionStorage.getItem("signup_required");
-
-      if (
-        signupRequired === "true" &&
-        !session &&
-        window.location.pathname === "/login"
-      ) {
-        sessionStorage.removeItem("signup_required");
-        toast.error("회원가입이 필요합니다. 회원가입을 진행해주세요.");
-        navigate("/signup", { replace: true });
-        return;
-      }
-
       if (session?.user?.id) {
         if (redirectParam) {
           navigate(redirectParam, { replace: true });
@@ -39,34 +26,31 @@ export const useLogin = () => {
     verifyAndRedirect();
   }, [session, navigate, redirectParam]);
 
-  const handleLogin = useCallback(
-    async (hasAllConsent: boolean) => {
-      setIsLoading(true);
-      setErrorMessage("");
+  const handleLogin = useCallback(async (hasAllConsent: boolean) => {
+    setIsLoading(true);
+    setErrorMessage("");
 
-      try {
-        saveConsentInfo(hasAllConsent);
+    try {
+      saveConsentInfo(hasAllConsent);
 
-        const redirectUrl = `${window.location.origin}/login?redirect=${encodeURIComponent(redirectParam)}`;
+      const redirectUrl = `${window.location.origin}/auth/callback`;
 
-        const { error } = await supabase.auth.signInWithOAuth({
-          provider: "google",
-          options: {
-            redirectTo: redirectUrl,
-          },
-        });
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: redirectUrl,
+        },
+      });
 
-        if (error) {
-          setErrorMessage(error.message || "로그인 중 오류가 발생했습니다.");
-          setIsLoading(false);
-        }
-      } catch (error) {
-        setErrorMessage("로그인 중 오류가 발생했습니다.");
+      if (error) {
+        setErrorMessage(error.message || "로그인 중 오류가 발생했습니다.");
         setIsLoading(false);
       }
-    },
-    [redirectParam],
-  );
+    } catch (error) {
+      setErrorMessage("로그인 중 오류가 발생했습니다.");
+      setIsLoading(false);
+    }
+  }, []);
 
   return { handleLogin, errorMessage, isLoading };
 };

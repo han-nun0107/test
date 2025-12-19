@@ -19,7 +19,6 @@ export default function ContactForm() {
   const handleFormSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
       const success = await handleSubmit(e);
-      // 폼 전송 성공 시에만 이름 입력 필드 초기화
       if (success) {
         setNickname("");
       }

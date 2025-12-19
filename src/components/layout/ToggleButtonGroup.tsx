@@ -14,9 +14,9 @@ type ToggleButtonGroupProps = {
 };
 
 const buttonGradients = [
-  "from-green-400 to-blue-500", // 메뉴
-  "from-purple-400 to-blue-500", // 정렬
-  "from-pink-400 to-orange-400", // 필터
+  "from-green-400 to-blue-500",
+  "from-purple-400 to-blue-500",
+  "from-pink-400 to-orange-400",
 ];
 
 export default function ToggleButtonGroup({

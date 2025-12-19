@@ -1,4 +1,3 @@
-// utils/categoryMapper.ts
 import type { SongData } from "@/api/songdb";
 import { normalizeCategories } from "@/utils";
 

@@ -7,6 +7,7 @@ import LoadingIndicator from "@/components/common/LoadingIndicator";
 const LandingPage = lazy(() => import("@/pages/LandingPage"));
 const Login = lazy(() => import("@/pages/Login"));
 const SignUp = lazy(() => import("@/pages/SignUp"));
+const AuthCallback = lazy(() => import("@/pages/AuthCallback"));
 const MyPage = lazy(() => import("@/pages/MyPage"));
 const Privacy = lazy(() => import("@/pages/Privacy"));
 
@@ -39,6 +40,14 @@ export const router = createBrowserRouter([
         element: (
           <Suspense fallback={<LoadingIndicator />}>
             <SignUp />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/auth/callback",
+        element: (
+          <Suspense fallback={<LoadingIndicator />}>
+            <AuthCallback />
           </Suspense>
         ),
       },

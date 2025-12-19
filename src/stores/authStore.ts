@@ -167,11 +167,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       });
 
       if (session?.user?.id) {
-        const userExists = await get().checkUserExists(session.user.id);
-        if (userExists) {
-          await get().createUserRecord(session.user.id);
-          await get().fetchUserProfile(session.user.id);
-        }
+        await get().createUserRecord(session.user.id);
+        await get().fetchUserProfile(session.user.id);
       }
 
       supabase.auth.onAuthStateChange(async (event, session) => {
@@ -182,14 +179,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
         if (session?.user?.id) {
           if (event === "SIGNED_IN") {
-            const userExists = await get().checkUserExists(session.user.id);
-
-            if (!userExists) {
-              await supabase.auth.signOut();
-              sessionStorage.setItem("signup_required", "true");
-              return;
-            }
-
             await get().createUserRecord(session.user.id);
           }
           if (

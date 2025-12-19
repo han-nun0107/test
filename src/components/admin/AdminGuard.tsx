@@ -8,7 +8,6 @@ export const AdminGuard = ({ children }: { children: React.ReactNode }) => {
   const userId = session?.user.id;
   const { isEditMode } = useEditModeStore();
 
-  // 어드민이면서 Edit 모드일 때만 접근 허용
   return isAdmin(userId) && isEditMode ? (
     <>{children}</>
   ) : (

@@ -7,6 +7,5 @@ export const AdminOnly = ({ children }: { children: React.ReactNode }) => {
   const userId = session?.user.id;
   const { isEditMode } = useEditModeStore();
 
-  // 어드민이면서 Edit 모드일 때만 표시
   return isAdmin(userId) && isEditMode ? <>{children}</> : null;
 };

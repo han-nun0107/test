@@ -13,7 +13,6 @@ export default function UserInfo({ user }: { user: User }) {
       })
     : "";
 
-  // 기본 아바타 이미지 (avatar_url이 없을 경우)
   const avatarUrl =
     user.avatar_url ||
     "https://ui-avatars.com/api/?name=" +

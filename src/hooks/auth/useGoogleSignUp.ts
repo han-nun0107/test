@@ -13,7 +13,7 @@ export const useGoogleSignUp = () => {
     try {
       saveConsentInfo(hasAllConsent);
 
-      const redirectUrl = `${window.location.origin}/signup`;
+      const redirectUrl = `${window.location.origin}/auth/callback?signup=true`;
 
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",

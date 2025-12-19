@@ -14,7 +14,6 @@ export default function SearchBar() {
     [setSearchQuery],
   );
 
-  // 노래 토글일 때만 표시
   if (toggle !== "song") {
     return null;
   }

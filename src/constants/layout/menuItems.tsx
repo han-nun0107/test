@@ -22,7 +22,6 @@ export const createMenuItems = (
 ): MenuItem[] => {
   const menuItems: MenuItem[] = [];
 
-  // 어드민일 때만 Edit 모드 메뉴 추가
   if (isAdmin) {
     menuItems.push({
       icon: <Pencil size={20} />,
@@ -31,7 +30,6 @@ export const createMenuItems = (
     });
   }
 
-  // 로그인 상태에 따라 메뉴 분기
   if (isLoggedIn) {
     menuItems.push(
       {
