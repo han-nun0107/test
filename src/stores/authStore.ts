@@ -3,8 +3,6 @@ import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/supabase/supabase";
 import { getConsentInfo, removeConsentInfo } from "@/utils/consentStorage";
 
-const CONSENT_STORAGE_KEY = "user_consent";
-
 type UserProfileStats = {
   user_id: string;
   email?: string;
@@ -201,18 +199,12 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
   signOut: async () => {
     try {
-      const consentInfo = localStorage.getItem(CONSENT_STORAGE_KEY);
-
       await supabase.auth.signOut();
       set({
         session: null,
         user: null,
         userProfile: null,
       });
-
-      if (consentInfo) {
-        localStorage.setItem(CONSENT_STORAGE_KEY, consentInfo);
-      }
     } catch (error) {}
   },
 

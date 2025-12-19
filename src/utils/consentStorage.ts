@@ -1,4 +1,9 @@
+import Cookies from "js-cookie";
+
 const CONSENT_STORAGE_KEY = "user_consent";
+const CONSENT_COOKIE_KEY = "onu_user_consent";
+// 쿠키 만료일: 1년
+const COOKIE_EXPIRES_DAYS = 365;
 
 export type ConsentInfo = {
   consented: boolean;
@@ -13,7 +18,15 @@ export const saveConsentInfo = (consented: boolean): void => {
       consented: true,
       timestamp: new Date().toISOString(),
     };
-    localStorage.setItem(CONSENT_STORAGE_KEY, JSON.stringify(consentData));
+    const consentJson = JSON.stringify(consentData);
+
+    localStorage.setItem(CONSENT_STORAGE_KEY, consentJson);
+
+    Cookies.set(CONSENT_COOKIE_KEY, consentJson, {
+      expires: COOKIE_EXPIRES_DAYS,
+      path: "/",
+      sameSite: "Lax",
+    });
   } catch (error) {
     return;
   }
@@ -21,7 +34,15 @@ export const saveConsentInfo = (consented: boolean): void => {
 
 export const getConsentInfo = (): ConsentInfo | null => {
   try {
-    const consentData = localStorage.getItem(CONSENT_STORAGE_KEY);
+    let consentData = localStorage.getItem(CONSENT_STORAGE_KEY);
+
+    if (!consentData) {
+      consentData = Cookies.get(CONSENT_COOKIE_KEY) || null;
+      if (consentData) {
+        localStorage.setItem(CONSENT_STORAGE_KEY, consentData);
+      }
+    }
+
     if (!consentData) return null;
 
     const parsed = JSON.parse(consentData) as ConsentInfo;
@@ -38,6 +59,7 @@ export const hasConsent = (): boolean => {
 export const removeConsentInfo = (): void => {
   try {
     localStorage.removeItem(CONSENT_STORAGE_KEY);
+    Cookies.remove(CONSENT_COOKIE_KEY, { path: "/" });
   } catch (error) {
     return;
   }

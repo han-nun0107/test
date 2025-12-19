@@ -33,17 +33,10 @@ export const useLayoutHandlers = () => {
           break;
         case "logout":
           try {
-            const consentInfo = localStorage.getItem("user_consent");
-
             const { error } = await supabase.auth.signOut();
             if (error) {
               throw error;
             }
-
-            if (consentInfo) {
-              localStorage.setItem("user_consent", consentInfo);
-            }
-
             toast.success("로그아웃되었습니다.");
           } catch (error) {
             console.error("로그아웃 오류:", error);
