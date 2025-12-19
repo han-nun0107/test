@@ -44,15 +44,19 @@ export default function SongListModal({
               song.thumbnail_url || song.inst || "",
             );
 
-            const handleSongClick = async () => {
-              const title = song.title || "제목 없음";
-              const textToCopy = `신청 ${title}`;
-              await copyToClipboard(textToCopy, `${title}을(를) 복사했습니다.`);
-            };
-
             const uniqueKey =
               song.id ||
               `${song.title || "unknown"}-${singer || "unknown"}-${song.thumbnail_url || song.inst || mainCategory || ""}`;
+
+            const handleSongClick = async () => {
+              const title = song.title || "제목 없음";
+              const textToCopy = `신청 ${title}`;
+              await copyToClipboard(
+                textToCopy,
+                `${title}을(를) 복사했습니다.`,
+                `copy-${uniqueKey}`,
+              );
+            };
 
             return (
               <div

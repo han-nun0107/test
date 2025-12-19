@@ -5,7 +5,7 @@ import { useNavigation } from "@/hooks";
 import { useEditModeStore } from "@/stores/editModeStore";
 import { supabase } from "@/supabase/supabase";
 import type { SongData } from "@/api/songdb";
-import { copyToClipboard } from "@/utils";
+import { copyToClipboard, logError } from "@/utils";
 import { toast } from "react-toastify";
 
 export const useLayoutHandlers = () => {
@@ -39,7 +39,7 @@ export const useLayoutHandlers = () => {
             }
             toast.success("로그아웃되었습니다.");
           } catch (error) {
-            console.error("로그아웃 오류:", error);
+            logError("로그아웃", error);
             toast.error("로그아웃 중 오류가 발생했습니다.");
           }
           break;
@@ -55,7 +55,14 @@ export const useLayoutHandlers = () => {
     async (song: SongData) => {
       const title = song.title || "제목 없음";
       const textToCopy = `신청 ${title}`;
-      await copyToClipboard(textToCopy, `${title}을(를) 복사했습니다.`);
+      const uniqueKey =
+        song.id ||
+        `${song.title || "unknown"}-${song.singer || "unknown"}-${song.thumbnail_url || song.inst || ""}`;
+      await copyToClipboard(
+        textToCopy,
+        `${title}을(를) 복사했습니다.`,
+        `copy-${uniqueKey}`,
+      );
       closeSearch();
     },
     [closeSearch],

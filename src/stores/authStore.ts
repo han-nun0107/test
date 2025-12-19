@@ -1,16 +1,12 @@
 import { create } from "zustand";
 import { supabase } from "@/supabase/supabase";
-import { getConsentInfo } from "@/utils";
+import { getConsentInfo, logError } from "@/utils";
 import type { AuthState, UserProfileStats } from "@/types";
 
 const getKoreaTimeISO = (): string => {
   const now = new Date();
   const koreaTime = new Date(now.getTime() + 9 * 60 * 60 * 1000);
   return koreaTime.toISOString();
-};
-
-const logError = (context: string, error: unknown) => {
-  console.error(`[${context}]`, error);
 };
 
 export const useAuthStore = create<AuthState>((set, get) => ({

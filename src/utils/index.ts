@@ -14,3 +14,4 @@ export * from "./songCardData";
 export * from "./consentStorage";
 export * from "./isAdmin";
 export * from "./fuzzySearch";
+export * from "./logger";

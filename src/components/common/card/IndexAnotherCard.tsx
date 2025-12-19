@@ -48,7 +48,7 @@ export default function IndexAnotherCard({
         {type === "category" ? (
           <CategoryModal songs={songs} categoryName={categoryName} />
         ) : (
-          <SingerModal songs={songs} singerName={categoryName} />
+          <SingerModal songs={songs} />
         )}
       </Modal>
     </article>

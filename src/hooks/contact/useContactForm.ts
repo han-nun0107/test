@@ -1,6 +1,7 @@
 import { useCallback, useRef, useState } from "react";
 import emailjs from "@emailjs/browser";
 import { toast } from "react-toastify";
+import { logError } from "@/utils";
 
 type FormElement = HTMLFormElement;
 
@@ -48,7 +49,7 @@ export function useContactForm(): UseContactFormReturn {
         formRef.current.reset();
         return true;
       } catch (error) {
-        console.error("EmailJS 전송 오류:", error);
+        logError("EmailJS 전송", error);
         toast.error(MESSAGES.ERROR);
         return false;
       } finally {
